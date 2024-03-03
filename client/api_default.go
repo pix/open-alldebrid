@@ -12,25 +12,21 @@ package client
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io"
+	"net/http"
+	"net/url"
 	"reflect"
 	"os"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
-// DefaultApiService DefaultApi service
-type DefaultApiService service
+// DefaultAPIService DefaultAPI service
+type DefaultAPIService service
 
 type ApiHostsDomainsGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 }
 
@@ -40,7 +36,7 @@ func (r ApiHostsDomainsGetRequest) Agent(agent string) ApiHostsDomainsGetRequest
 	return r
 }
 
-func (r ApiHostsDomainsGetRequest) Execute() (InlineResponse2001, *_nethttp.Response, error) {
+func (r ApiHostsDomainsGetRequest) Execute() (*HostsDomainsGet200Response, *http.Response, error) {
 	return r.ApiService.HostsDomainsGetExecute(r)
 }
 
@@ -49,10 +45,10 @@ HostsDomainsGet Use this endpoint to only retrieve the list of supported hosts d
 
 Use this endpoint to only retrieve the list of supported hosts domains and redirectors as an array.<br /> <br /> This will also include any alternative domain the hosts or redirectors have.<br /> Please use regexps availables in /hosts or /user/hosts endpoints to validate supported links.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiHostsDomainsGetRequest
 */
-func (a *DefaultApiService) HostsDomainsGet(ctx _context.Context) ApiHostsDomainsGetRequest {
+func (a *DefaultAPIService) HostsDomainsGet(ctx context.Context) ApiHostsDomainsGetRequest {
 	return ApiHostsDomainsGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -60,30 +56,30 @@ func (a *DefaultApiService) HostsDomainsGet(ctx _context.Context) ApiHostsDomain
 }
 
 // Execute executes the request
-//  @return InlineResponse2001
-func (a *DefaultApiService) HostsDomainsGetExecute(r ApiHostsDomainsGetRequest) (InlineResponse2001, *_nethttp.Response, error) {
+//  @return HostsDomainsGet200Response
+func (a *DefaultAPIService) HostsDomainsGetExecute(r ApiHostsDomainsGetRequest) (*HostsDomainsGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2001
+		localVarReturnValue  *HostsDomainsGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.HostsDomainsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.HostsDomainsGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/hosts/domains"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -111,15 +107,15 @@ func (a *DefaultApiService) HostsDomainsGetExecute(r ApiHostsDomainsGetRequest) 
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -128,7 +124,7 @@ func (a *DefaultApiService) HostsDomainsGetExecute(r ApiHostsDomainsGetRequest) 
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -139,8 +135,8 @@ func (a *DefaultApiService) HostsDomainsGetExecute(r ApiHostsDomainsGetRequest) 
 }
 
 type ApiHostsGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	hostOnly *string
 }
@@ -150,13 +146,14 @@ func (r ApiHostsGetRequest) Agent(agent string) ApiHostsGetRequest {
 	r.agent = &agent
 	return r
 }
+
 // Endpoint will only return \&quot;hosts\&quot; data
 func (r ApiHostsGetRequest) HostOnly(hostOnly string) ApiHostsGetRequest {
 	r.hostOnly = &hostOnly
 	return r
 }
 
-func (r ApiHostsGetRequest) Execute() (InlineResponse200, *_nethttp.Response, error) {
+func (r ApiHostsGetRequest) Execute() (*HostsGet200Response, *http.Response, error) {
 	return r.ApiService.HostsGetExecute(r)
 }
 
@@ -165,10 +162,10 @@ HostsGet Use this endpoint to retrieve informations about what hosts we support.
 
 Use this endpoint to retrieve informations about what hosts we support and all related informations about it.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiHostsGetRequest
 */
-func (a *DefaultApiService) HostsGet(ctx _context.Context) ApiHostsGetRequest {
+func (a *DefaultAPIService) HostsGet(ctx context.Context) ApiHostsGetRequest {
 	return ApiHostsGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -176,32 +173,32 @@ func (a *DefaultApiService) HostsGet(ctx _context.Context) ApiHostsGetRequest {
 }
 
 // Execute executes the request
-//  @return InlineResponse200
-func (a *DefaultApiService) HostsGetExecute(r ApiHostsGetRequest) (InlineResponse200, *_nethttp.Response, error) {
+//  @return HostsGet200Response
+func (a *DefaultAPIService) HostsGetExecute(r ApiHostsGetRequest) (*HostsGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse200
+		localVarReturnValue  *HostsGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.HostsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.HostsGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/hosts"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	if r.hostOnly != nil {
-		localVarQueryParams.Add("hostOnly", parameterToString(*r.hostOnly, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "hostOnly", r.hostOnly, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -230,15 +227,15 @@ func (a *DefaultApiService) HostsGetExecute(r ApiHostsGetRequest) (InlineRespons
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -247,7 +244,7 @@ func (a *DefaultApiService) HostsGetExecute(r ApiHostsGetRequest) (InlineRespons
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -258,8 +255,8 @@ func (a *DefaultApiService) HostsGetExecute(r ApiHostsGetRequest) (InlineRespons
 }
 
 type ApiHostsPriorityGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 }
 
@@ -269,7 +266,7 @@ func (r ApiHostsPriorityGetRequest) Agent(agent string) ApiHostsPriorityGetReque
 	return r
 }
 
-func (r ApiHostsPriorityGetRequest) Execute() (InlineResponse2002, *_nethttp.Response, error) {
+func (r ApiHostsPriorityGetRequest) Execute() (*HostsPriorityGet200Response, *http.Response, error) {
 	return r.ApiService.HostsPriorityGetExecute(r)
 }
 
@@ -278,10 +275,10 @@ HostsPriorityGet Not all hosts are created equal, so some hosts are more limited
 
 Use this endpoint to retrieve an ordered list of main domain of hosts, from more open to more restricted.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiHostsPriorityGetRequest
 */
-func (a *DefaultApiService) HostsPriorityGet(ctx _context.Context) ApiHostsPriorityGetRequest {
+func (a *DefaultAPIService) HostsPriorityGet(ctx context.Context) ApiHostsPriorityGetRequest {
 	return ApiHostsPriorityGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -289,30 +286,30 @@ func (a *DefaultApiService) HostsPriorityGet(ctx _context.Context) ApiHostsPrior
 }
 
 // Execute executes the request
-//  @return InlineResponse2002
-func (a *DefaultApiService) HostsPriorityGetExecute(r ApiHostsPriorityGetRequest) (InlineResponse2002, *_nethttp.Response, error) {
+//  @return HostsPriorityGet200Response
+func (a *DefaultAPIService) HostsPriorityGetExecute(r ApiHostsPriorityGetRequest) (*HostsPriorityGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2002
+		localVarReturnValue  *HostsPriorityGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.HostsPriorityGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.HostsPriorityGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/hosts/priority"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -340,15 +337,15 @@ func (a *DefaultApiService) HostsPriorityGetExecute(r ApiHostsPriorityGetRequest
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -357,7 +354,7 @@ func (a *DefaultApiService) HostsPriorityGetExecute(r ApiHostsPriorityGetRequest
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -368,8 +365,8 @@ func (a *DefaultApiService) HostsPriorityGetExecute(r ApiHostsPriorityGetRequest
 }
 
 type ApiLinkDelayedGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	id *string
 	apikey *string
@@ -380,18 +377,20 @@ func (r ApiLinkDelayedGetRequest) Agent(agent string) ApiLinkDelayedGetRequest {
 	r.agent = &agent
 	return r
 }
+
 // Delayed ID received in /link/unlock.
 func (r ApiLinkDelayedGetRequest) Id(id string) ApiLinkDelayedGetRequest {
 	r.id = &id
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiLinkDelayedGetRequest) Apikey(apikey string) ApiLinkDelayedGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiLinkDelayedGetRequest) Execute() (InlineResponse2009, *_nethttp.Response, error) {
+func (r ApiLinkDelayedGetRequest) Execute() (*LinkDelayedGet200Response, *http.Response, error) {
 	return r.ApiService.LinkDelayedGetExecute(r)
 }
 
@@ -400,10 +399,10 @@ LinkDelayedGet This endpoint give the status of a delayed link.
 
 This endpoint give the status of a delayed link.<br /> <br /> Some links need time to generate, this endpoint send the status of such delayed links.<br /> <br /> You should pool every 5 seconds or more the link/delayed endpoint until given the download link.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiLinkDelayedGetRequest
 */
-func (a *DefaultApiService) LinkDelayedGet(ctx _context.Context) ApiLinkDelayedGetRequest {
+func (a *DefaultAPIService) LinkDelayedGet(ctx context.Context) ApiLinkDelayedGetRequest {
 	return ApiLinkDelayedGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -411,25 +410,25 @@ func (a *DefaultApiService) LinkDelayedGet(ctx _context.Context) ApiLinkDelayedG
 }
 
 // Execute executes the request
-//  @return InlineResponse2009
-func (a *DefaultApiService) LinkDelayedGetExecute(r ApiLinkDelayedGetRequest) (InlineResponse2009, *_nethttp.Response, error) {
+//  @return LinkDelayedGet200Response
+func (a *DefaultAPIService) LinkDelayedGetExecute(r ApiLinkDelayedGetRequest) (*LinkDelayedGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2009
+		localVarReturnValue  *LinkDelayedGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.LinkDelayedGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.LinkDelayedGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/link/delayed"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -438,10 +437,10 @@ func (a *DefaultApiService) LinkDelayedGetExecute(r ApiLinkDelayedGetRequest) (I
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
-	localVarQueryParams.Add("id", parameterToString(*r.id, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -469,15 +468,15 @@ func (a *DefaultApiService) LinkDelayedGetExecute(r ApiLinkDelayedGetRequest) (I
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -486,7 +485,7 @@ func (a *DefaultApiService) LinkDelayedGetExecute(r ApiLinkDelayedGetRequest) (I
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -497,8 +496,8 @@ func (a *DefaultApiService) LinkDelayedGetExecute(r ApiLinkDelayedGetRequest) (I
 }
 
 type ApiLinkInfosGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	link *[]string
 	apikey *string
@@ -510,23 +509,26 @@ func (r ApiLinkInfosGetRequest) Agent(agent string) ApiLinkInfosGetRequest {
 	r.agent = &agent
 	return r
 }
+
 // The link or array of links you request informations about.
 func (r ApiLinkInfosGetRequest) Link(link []string) ApiLinkInfosGetRequest {
 	r.link = &link
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiLinkInfosGetRequest) Apikey(apikey string) ApiLinkInfosGetRequest {
 	r.apikey = &apikey
 	return r
 }
+
 // Link password (supported on uptobox / 1fichier).
 func (r ApiLinkInfosGetRequest) Password(password string) ApiLinkInfosGetRequest {
 	r.password = &password
 	return r
 }
 
-func (r ApiLinkInfosGetRequest) Execute() (InlineResponse2005, *_nethttp.Response, error) {
+func (r ApiLinkInfosGetRequest) Execute() (*LinkInfosGet200Response, *http.Response, error) {
 	return r.ApiService.LinkInfosGetExecute(r)
 }
 
@@ -535,10 +537,10 @@ LinkInfosGet Use this endpoint to retrieve informations about a link.
 
 Use this endpoint to retrieve informations about a link.<br /> If it is in our systems, you'll have the filename and size (if available).<br /> <br /> If the host is not supported or the link is down, an error will be<br /> returned for that link.<br /> <br /> This endpoint only support host links, not redirectors links. Use the<br /> link/redirector endpoint for this.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiLinkInfosGetRequest
 */
-func (a *DefaultApiService) LinkInfosGet(ctx _context.Context) ApiLinkInfosGetRequest {
+func (a *DefaultAPIService) LinkInfosGet(ctx context.Context) ApiLinkInfosGetRequest {
 	return ApiLinkInfosGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -546,25 +548,25 @@ func (a *DefaultApiService) LinkInfosGet(ctx _context.Context) ApiLinkInfosGetRe
 }
 
 // Execute executes the request
-//  @return InlineResponse2005
-func (a *DefaultApiService) LinkInfosGetExecute(r ApiLinkInfosGetRequest) (InlineResponse2005, *_nethttp.Response, error) {
+//  @return LinkInfosGet200Response
+func (a *DefaultAPIService) LinkInfosGetExecute(r ApiLinkInfosGetRequest) (*LinkInfosGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2005
+		localVarReturnValue  *LinkInfosGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.LinkInfosGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.LinkInfosGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/link/infos"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -573,21 +575,21 @@ func (a *DefaultApiService) LinkInfosGetExecute(r ApiLinkInfosGetRequest) (Inlin
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	if r.password != nil {
-		localVarQueryParams.Add("password", parameterToString(*r.password, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "password", r.password, "")
 	}
 	{
 		t := *r.link
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("link[]", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "link[]", s.Index(i).Interface(), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("link[]", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "link[]", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -617,15 +619,15 @@ func (a *DefaultApiService) LinkInfosGetExecute(r ApiLinkInfosGetRequest) (Inlin
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -634,7 +636,7 @@ func (a *DefaultApiService) LinkInfosGetExecute(r ApiLinkInfosGetRequest) (Inlin
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -645,8 +647,8 @@ func (a *DefaultApiService) LinkInfosGetExecute(r ApiLinkInfosGetRequest) (Inlin
 }
 
 type ApiLinkRedirectorGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	link *string
 	apikey *string
@@ -657,18 +659,20 @@ func (r ApiLinkRedirectorGetRequest) Agent(agent string) ApiLinkRedirectorGetReq
 	r.agent = &agent
 	return r
 }
+
 // The redirector or protector link to extract links.
 func (r ApiLinkRedirectorGetRequest) Link(link string) ApiLinkRedirectorGetRequest {
 	r.link = &link
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiLinkRedirectorGetRequest) Apikey(apikey string) ApiLinkRedirectorGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiLinkRedirectorGetRequest) Execute() (InlineResponse2006, *_nethttp.Response, error) {
+func (r ApiLinkRedirectorGetRequest) Execute() (*LinkRedirectorGet200Response, *http.Response, error) {
 	return r.ApiService.LinkRedirectorGetExecute(r)
 }
 
@@ -677,10 +681,10 @@ LinkRedirectorGet Use this endpoint to retrieve links protected by a redirector 
 
 Use this endpoint to retrieve links protected by a redirector or link protector.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiLinkRedirectorGetRequest
 */
-func (a *DefaultApiService) LinkRedirectorGet(ctx _context.Context) ApiLinkRedirectorGetRequest {
+func (a *DefaultAPIService) LinkRedirectorGet(ctx context.Context) ApiLinkRedirectorGetRequest {
 	return ApiLinkRedirectorGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -688,25 +692,25 @@ func (a *DefaultApiService) LinkRedirectorGet(ctx _context.Context) ApiLinkRedir
 }
 
 // Execute executes the request
-//  @return InlineResponse2006
-func (a *DefaultApiService) LinkRedirectorGetExecute(r ApiLinkRedirectorGetRequest) (InlineResponse2006, *_nethttp.Response, error) {
+//  @return LinkRedirectorGet200Response
+func (a *DefaultAPIService) LinkRedirectorGetExecute(r ApiLinkRedirectorGetRequest) (*LinkRedirectorGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2006
+		localVarReturnValue  *LinkRedirectorGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.LinkRedirectorGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.LinkRedirectorGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/link/redirector"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -715,10 +719,10 @@ func (a *DefaultApiService) LinkRedirectorGetExecute(r ApiLinkRedirectorGetReque
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
-	localVarQueryParams.Add("link", parameterToString(*r.link, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "link", r.link, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -746,15 +750,15 @@ func (a *DefaultApiService) LinkRedirectorGetExecute(r ApiLinkRedirectorGetReque
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -763,7 +767,7 @@ func (a *DefaultApiService) LinkRedirectorGetExecute(r ApiLinkRedirectorGetReque
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -774,8 +778,8 @@ func (a *DefaultApiService) LinkRedirectorGetExecute(r ApiLinkRedirectorGetReque
 }
 
 type ApiLinkStreamingGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	id *string
 	stream *string
@@ -787,23 +791,26 @@ func (r ApiLinkStreamingGetRequest) Agent(agent string) ApiLinkStreamingGetReque
 	r.agent = &agent
 	return r
 }
+
 // The link ID you received from the /link/unlock call.
 func (r ApiLinkStreamingGetRequest) Id(id string) ApiLinkStreamingGetRequest {
 	r.id = &id
 	return r
 }
+
 // The stream ID you choosed from the stream qualities list returned by /link/unlock.
 func (r ApiLinkStreamingGetRequest) Stream(stream string) ApiLinkStreamingGetRequest {
 	r.stream = &stream
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiLinkStreamingGetRequest) Apikey(apikey string) ApiLinkStreamingGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiLinkStreamingGetRequest) Execute() (InlineResponse2008, *_nethttp.Response, error) {
+func (r ApiLinkStreamingGetRequest) Execute() (*LinkStreamingGet200Response, *http.Response, error) {
 	return r.ApiService.LinkStreamingGetExecute(r)
 }
 
@@ -812,10 +819,10 @@ LinkStreamingGet The unlocking flow for streaming link is a bit more complex.
 
 First hit the usual link/unlock endpoint. Two cases:<br /> <br /> Stream link has only one quality : downloading link is available immediatly.<br /> <br /> OR<br /> <br /> Stream links has multiple qualities : you must select the desired<br /> quality to obtain a download link or delayed id by using the<br /> link/streaming endpoint.<br /> <br /> Depending of the stream website, you'll either get a download link, or a<br /> delayed id (see Delayed link section for delayed links).<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiLinkStreamingGetRequest
 */
-func (a *DefaultApiService) LinkStreamingGet(ctx _context.Context) ApiLinkStreamingGetRequest {
+func (a *DefaultAPIService) LinkStreamingGet(ctx context.Context) ApiLinkStreamingGetRequest {
 	return ApiLinkStreamingGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -823,25 +830,25 @@ func (a *DefaultApiService) LinkStreamingGet(ctx _context.Context) ApiLinkStream
 }
 
 // Execute executes the request
-//  @return InlineResponse2008
-func (a *DefaultApiService) LinkStreamingGetExecute(r ApiLinkStreamingGetRequest) (InlineResponse2008, *_nethttp.Response, error) {
+//  @return LinkStreamingGet200Response
+func (a *DefaultAPIService) LinkStreamingGetExecute(r ApiLinkStreamingGetRequest) (*LinkStreamingGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2008
+		localVarReturnValue  *LinkStreamingGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.LinkStreamingGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.LinkStreamingGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/link/streaming"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -853,11 +860,11 @@ func (a *DefaultApiService) LinkStreamingGetExecute(r ApiLinkStreamingGetRequest
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
-	localVarQueryParams.Add("id", parameterToString(*r.id, ""))
-	localVarQueryParams.Add("stream", parameterToString(*r.stream, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "stream", r.stream, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -885,15 +892,15 @@ func (a *DefaultApiService) LinkStreamingGetExecute(r ApiLinkStreamingGetRequest
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -902,7 +909,7 @@ func (a *DefaultApiService) LinkStreamingGetExecute(r ApiLinkStreamingGetRequest
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -913,8 +920,8 @@ func (a *DefaultApiService) LinkStreamingGetExecute(r ApiLinkStreamingGetRequest
 }
 
 type ApiLinkUnlockGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	link *string
 	apikey *string
@@ -926,23 +933,26 @@ func (r ApiLinkUnlockGetRequest) Agent(agent string) ApiLinkUnlockGetRequest {
 	r.agent = &agent
 	return r
 }
+
 // The redirector or protector link to extract links.
 func (r ApiLinkUnlockGetRequest) Link(link string) ApiLinkUnlockGetRequest {
 	r.link = &link
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiLinkUnlockGetRequest) Apikey(apikey string) ApiLinkUnlockGetRequest {
 	r.apikey = &apikey
 	return r
 }
+
 // Link password (supported on uptobox / 1fichier).
 func (r ApiLinkUnlockGetRequest) Password(password string) ApiLinkUnlockGetRequest {
 	r.password = &password
 	return r
 }
 
-func (r ApiLinkUnlockGetRequest) Execute() (InlineResponse2007, *_nethttp.Response, error) {
+func (r ApiLinkUnlockGetRequest) Execute() (*LinkUnlockGet200Response, *http.Response, error) {
 	return r.ApiService.LinkUnlockGetExecute(r)
 }
 
@@ -951,10 +961,10 @@ LinkUnlockGet This endpoint unlocks a given link.
 
 This endpoint can return a delayed ID. In that case, you must follow the delayed link flow.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiLinkUnlockGetRequest
 */
-func (a *DefaultApiService) LinkUnlockGet(ctx _context.Context) ApiLinkUnlockGetRequest {
+func (a *DefaultAPIService) LinkUnlockGet(ctx context.Context) ApiLinkUnlockGetRequest {
 	return ApiLinkUnlockGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -962,25 +972,25 @@ func (a *DefaultApiService) LinkUnlockGet(ctx _context.Context) ApiLinkUnlockGet
 }
 
 // Execute executes the request
-//  @return InlineResponse2007
-func (a *DefaultApiService) LinkUnlockGetExecute(r ApiLinkUnlockGetRequest) (InlineResponse2007, *_nethttp.Response, error) {
+//  @return LinkUnlockGet200Response
+func (a *DefaultAPIService) LinkUnlockGetExecute(r ApiLinkUnlockGetRequest) (*LinkUnlockGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2007
+		localVarReturnValue  *LinkUnlockGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.LinkUnlockGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.LinkUnlockGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/link/unlock"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -989,12 +999,12 @@ func (a *DefaultApiService) LinkUnlockGetExecute(r ApiLinkUnlockGetRequest) (Inl
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
-	localVarQueryParams.Add("link", parameterToString(*r.link, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "link", r.link, "")
 	if r.password != nil {
-		localVarQueryParams.Add("password", parameterToString(*r.password, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "password", r.password, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1023,15 +1033,15 @@ func (a *DefaultApiService) LinkUnlockGetExecute(r ApiLinkUnlockGetRequest) (Inl
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1040,7 +1050,7 @@ func (a *DefaultApiService) LinkUnlockGetExecute(r ApiLinkUnlockGetRequest) (Inl
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1051,8 +1061,8 @@ func (a *DefaultApiService) LinkUnlockGetExecute(r ApiLinkUnlockGetRequest) (Inl
 }
 
 type ApiMagnetDeleteGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	id *string
 	apikey *string
@@ -1063,18 +1073,20 @@ func (r ApiMagnetDeleteGetRequest) Agent(agent string) ApiMagnetDeleteGetRequest
 	r.agent = &agent
 	return r
 }
+
 // Magnet ID.
 func (r ApiMagnetDeleteGetRequest) Id(id string) ApiMagnetDeleteGetRequest {
 	r.id = &id
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiMagnetDeleteGetRequest) Apikey(apikey string) ApiMagnetDeleteGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiMagnetDeleteGetRequest) Execute() (InlineResponse20013, *_nethttp.Response, error) {
+func (r ApiMagnetDeleteGetRequest) Execute() (*MagnetDeleteGet200Response, *http.Response, error) {
 	return r.ApiService.MagnetDeleteGetExecute(r)
 }
 
@@ -1083,10 +1095,10 @@ MagnetDeleteGet Delete a magnet.
 
 Delete a magnet.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMagnetDeleteGetRequest
 */
-func (a *DefaultApiService) MagnetDeleteGet(ctx _context.Context) ApiMagnetDeleteGetRequest {
+func (a *DefaultAPIService) MagnetDeleteGet(ctx context.Context) ApiMagnetDeleteGetRequest {
 	return ApiMagnetDeleteGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1094,25 +1106,25 @@ func (a *DefaultApiService) MagnetDeleteGet(ctx _context.Context) ApiMagnetDelet
 }
 
 // Execute executes the request
-//  @return InlineResponse20013
-func (a *DefaultApiService) MagnetDeleteGetExecute(r ApiMagnetDeleteGetRequest) (InlineResponse20013, *_nethttp.Response, error) {
+//  @return MagnetDeleteGet200Response
+func (a *DefaultAPIService) MagnetDeleteGetExecute(r ApiMagnetDeleteGetRequest) (*MagnetDeleteGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20013
+		localVarReturnValue  *MagnetDeleteGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.MagnetDeleteGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.MagnetDeleteGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/magnet/delete"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -1121,10 +1133,10 @@ func (a *DefaultApiService) MagnetDeleteGetExecute(r ApiMagnetDeleteGetRequest) 
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
-	localVarQueryParams.Add("id", parameterToString(*r.id, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1152,15 +1164,15 @@ func (a *DefaultApiService) MagnetDeleteGetExecute(r ApiMagnetDeleteGetRequest) 
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1169,7 +1181,7 @@ func (a *DefaultApiService) MagnetDeleteGetExecute(r ApiMagnetDeleteGetRequest) 
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1180,8 +1192,8 @@ func (a *DefaultApiService) MagnetDeleteGetExecute(r ApiMagnetDeleteGetRequest) 
 }
 
 type ApiMagnetInstantGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	magnets *[]string
 	apikey *string
@@ -1192,18 +1204,20 @@ func (r ApiMagnetInstantGetRequest) Agent(agent string) ApiMagnetInstantGetReque
 	r.agent = &agent
 	return r
 }
+
 // Magnets URI or hash you wish to check instant availability, can be one or many links
 func (r ApiMagnetInstantGetRequest) Magnets(magnets []string) ApiMagnetInstantGetRequest {
 	r.magnets = &magnets
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiMagnetInstantGetRequest) Apikey(apikey string) ApiMagnetInstantGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiMagnetInstantGetRequest) Execute() (InlineResponse20015, *_nethttp.Response, error) {
+func (r ApiMagnetInstantGetRequest) Execute() (*MagnetInstantGet200Response, *http.Response, error) {
 	return r.ApiService.MagnetInstantGetExecute(r)
 }
 
@@ -1212,10 +1226,10 @@ MagnetInstantGet Check if a magnet is available instantly.
 
 Check if a magnet is available instantly.<br /> You can either send the magnets in GET parameters, or in POST.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMagnetInstantGetRequest
 */
-func (a *DefaultApiService) MagnetInstantGet(ctx _context.Context) ApiMagnetInstantGetRequest {
+func (a *DefaultAPIService) MagnetInstantGet(ctx context.Context) ApiMagnetInstantGetRequest {
 	return ApiMagnetInstantGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1223,25 +1237,25 @@ func (a *DefaultApiService) MagnetInstantGet(ctx _context.Context) ApiMagnetInst
 }
 
 // Execute executes the request
-//  @return InlineResponse20015
-func (a *DefaultApiService) MagnetInstantGetExecute(r ApiMagnetInstantGetRequest) (InlineResponse20015, *_nethttp.Response, error) {
+//  @return MagnetInstantGet200Response
+func (a *DefaultAPIService) MagnetInstantGetExecute(r ApiMagnetInstantGetRequest) (*MagnetInstantGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20015
+		localVarReturnValue  *MagnetInstantGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.MagnetInstantGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.MagnetInstantGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/magnet/instant"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -1250,18 +1264,18 @@ func (a *DefaultApiService) MagnetInstantGetExecute(r ApiMagnetInstantGetRequest
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	{
 		t := *r.magnets
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("magnets[]", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "magnets[]", s.Index(i).Interface(), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("magnets[]", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "magnets[]", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -1291,15 +1305,15 @@ func (a *DefaultApiService) MagnetInstantGetExecute(r ApiMagnetInstantGetRequest
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1308,7 +1322,7 @@ func (a *DefaultApiService) MagnetInstantGetExecute(r ApiMagnetInstantGetRequest
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1319,10 +1333,10 @@ func (a *DefaultApiService) MagnetInstantGetExecute(r ApiMagnetInstantGetRequest
 }
 
 type ApiMagnetRestartGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
-	ids *[]string
+	id *string
 	apikey *string
 }
 
@@ -1331,18 +1345,20 @@ func (r ApiMagnetRestartGetRequest) Agent(agent string) ApiMagnetRestartGetReque
 	r.agent = &agent
 	return r
 }
-// Array of Magnet ID.
-func (r ApiMagnetRestartGetRequest) Ids(ids []string) ApiMagnetRestartGetRequest {
-	r.ids = &ids
+
+// Magnet ID
+func (r ApiMagnetRestartGetRequest) Id(id string) ApiMagnetRestartGetRequest {
+	r.id = &id
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiMagnetRestartGetRequest) Apikey(apikey string) ApiMagnetRestartGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiMagnetRestartGetRequest) Execute() (InlineResponse20014, *_nethttp.Response, error) {
+func (r ApiMagnetRestartGetRequest) Execute() (*MagnetRestartGet200Response, *http.Response, error) {
 	return r.ApiService.MagnetRestartGetExecute(r)
 }
 
@@ -1351,10 +1367,10 @@ MagnetRestartGet Restart a failed magnet, or multiple failed magnets at once.
 
 Restart a failed magnet, or multiple failed magnets at once.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMagnetRestartGetRequest
 */
-func (a *DefaultApiService) MagnetRestartGet(ctx _context.Context) ApiMagnetRestartGetRequest {
+func (a *DefaultAPIService) MagnetRestartGet(ctx context.Context) ApiMagnetRestartGetRequest {
 	return ApiMagnetRestartGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1362,47 +1378,37 @@ func (a *DefaultApiService) MagnetRestartGet(ctx _context.Context) ApiMagnetRest
 }
 
 // Execute executes the request
-//  @return InlineResponse20014
-func (a *DefaultApiService) MagnetRestartGetExecute(r ApiMagnetRestartGetRequest) (InlineResponse20014, *_nethttp.Response, error) {
+//  @return MagnetRestartGet200Response
+func (a *DefaultAPIService) MagnetRestartGetExecute(r ApiMagnetRestartGetRequest) (*MagnetRestartGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20014
+		localVarReturnValue  *MagnetRestartGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.MagnetRestartGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.MagnetRestartGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/magnet/restart"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
-	if r.ids == nil {
-		return localVarReturnValue, nil, reportError("ids is required and must be specified")
+	if r.id == nil {
+		return localVarReturnValue, nil, reportError("id is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
-	{
-		t := *r.ids
-		if reflect.TypeOf(t).Kind() == reflect.Slice {
-			s := reflect.ValueOf(t)
-			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("ids", parameterToString(s.Index(i), "multi"))
-			}
-		} else {
-			localVarQueryParams.Add("ids", parameterToString(t, "multi"))
-		}
-	}
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1430,15 +1436,15 @@ func (a *DefaultApiService) MagnetRestartGetExecute(r ApiMagnetRestartGetRequest
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1447,7 +1453,7 @@ func (a *DefaultApiService) MagnetRestartGetExecute(r ApiMagnetRestartGetRequest
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1458,8 +1464,8 @@ func (a *DefaultApiService) MagnetRestartGetExecute(r ApiMagnetRestartGetRequest
 }
 
 type ApiMagnetStatusGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	apikey *string
 	id *string
@@ -1473,33 +1479,38 @@ func (r ApiMagnetStatusGetRequest) Agent(agent string) ApiMagnetStatusGetRequest
 	r.agent = &agent
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiMagnetStatusGetRequest) Apikey(apikey string) ApiMagnetStatusGetRequest {
 	r.apikey = &apikey
 	return r
 }
+
 // Magnet ID.
 func (r ApiMagnetStatusGetRequest) Id(id string) ApiMagnetStatusGetRequest {
 	r.id = &id
 	return r
 }
+
 // Magnets status filter. Either active, ready, expired or error
 func (r ApiMagnetStatusGetRequest) Status(status string) ApiMagnetStatusGetRequest {
 	r.status = &status
 	return r
 }
+
 // Session ID for Live mode (see Live Mode).
 func (r ApiMagnetStatusGetRequest) Session(session string) ApiMagnetStatusGetRequest {
 	r.session = &session
 	return r
 }
+
 // Counter for Live mode (see Live Mode).
 func (r ApiMagnetStatusGetRequest) Counter(counter string) ApiMagnetStatusGetRequest {
 	r.counter = &counter
 	return r
 }
 
-func (r ApiMagnetStatusGetRequest) Execute() (InlineResponse20012, *_nethttp.Response, error) {
+func (r ApiMagnetStatusGetRequest) Execute() (*MagnetStatusGet200Response, *http.Response, error) {
 	return r.ApiService.MagnetStatusGetExecute(r)
 }
 
@@ -1508,10 +1519,10 @@ MagnetStatusGet Get the status of current magnets, or only one if you specify a 
 
 Get the status of current magnets, or only one if you specify a magnet ID.<br /> !TODO: Add live magnet status.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMagnetStatusGetRequest
 */
-func (a *DefaultApiService) MagnetStatusGet(ctx _context.Context) ApiMagnetStatusGetRequest {
+func (a *DefaultAPIService) MagnetStatusGet(ctx context.Context) ApiMagnetStatusGetRequest {
 	return ApiMagnetStatusGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1519,44 +1530,44 @@ func (a *DefaultApiService) MagnetStatusGet(ctx _context.Context) ApiMagnetStatu
 }
 
 // Execute executes the request
-//  @return InlineResponse20012
-func (a *DefaultApiService) MagnetStatusGetExecute(r ApiMagnetStatusGetRequest) (InlineResponse20012, *_nethttp.Response, error) {
+//  @return MagnetStatusGet200Response
+func (a *DefaultAPIService) MagnetStatusGetExecute(r ApiMagnetStatusGetRequest) (*MagnetStatusGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20012
+		localVarReturnValue  *MagnetStatusGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.MagnetStatusGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.MagnetStatusGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/magnet/status"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	if r.id != nil {
-		localVarQueryParams.Add("id", parameterToString(*r.id, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "id", r.id, "")
 	}
 	if r.status != nil {
-		localVarQueryParams.Add("status", parameterToString(*r.status, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "status", r.status, "")
 	}
 	if r.session != nil {
-		localVarQueryParams.Add("session", parameterToString(*r.session, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "session", r.session, "")
 	}
 	if r.counter != nil {
-		localVarQueryParams.Add("counter", parameterToString(*r.counter, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "counter", r.counter, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1585,15 +1596,15 @@ func (a *DefaultApiService) MagnetStatusGetExecute(r ApiMagnetStatusGetRequest) 
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1602,7 +1613,7 @@ func (a *DefaultApiService) MagnetStatusGetExecute(r ApiMagnetStatusGetRequest) 
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1613,11 +1624,11 @@ func (a *DefaultApiService) MagnetStatusGetExecute(r ApiMagnetStatusGetRequest) 
 }
 
 type ApiMagnetUploadFilePostRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	apikey *string
-	file **os.File
+	files *os.File
 }
 
 // Your software user-agent.
@@ -1625,17 +1636,19 @@ func (r ApiMagnetUploadFilePostRequest) Agent(agent string) ApiMagnetUploadFileP
 	r.agent = &agent
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiMagnetUploadFilePostRequest) Apikey(apikey string) ApiMagnetUploadFilePostRequest {
 	r.apikey = &apikey
 	return r
 }
-func (r ApiMagnetUploadFilePostRequest) File(file *os.File) ApiMagnetUploadFilePostRequest {
-	r.file = &file
+
+func (r ApiMagnetUploadFilePostRequest) Files(files *os.File) ApiMagnetUploadFilePostRequest {
+	r.files = files
 	return r
 }
 
-func (r ApiMagnetUploadFilePostRequest) Execute() (InlineResponse20011, *_nethttp.Response, error) {
+func (r ApiMagnetUploadFilePostRequest) Execute() (*MagnetUploadFilePost200Response, *http.Response, error) {
 	return r.ApiService.MagnetUploadFilePostExecute(r)
 }
 
@@ -1644,10 +1657,10 @@ MagnetUploadFilePost Upload torrent files.
 
 Upload torrent files.<br /> This endpoint should be POSTed on.<br /> It expects a multipart formdata file upload.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMagnetUploadFilePostRequest
 */
-func (a *DefaultApiService) MagnetUploadFilePost(ctx _context.Context) ApiMagnetUploadFilePostRequest {
+func (a *DefaultAPIService) MagnetUploadFilePost(ctx context.Context) ApiMagnetUploadFilePostRequest {
 	return ApiMagnetUploadFilePostRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1655,33 +1668,33 @@ func (a *DefaultApiService) MagnetUploadFilePost(ctx _context.Context) ApiMagnet
 }
 
 // Execute executes the request
-//  @return InlineResponse20011
-func (a *DefaultApiService) MagnetUploadFilePostExecute(r ApiMagnetUploadFilePostRequest) (InlineResponse20011, *_nethttp.Response, error) {
+//  @return MagnetUploadFilePost200Response
+func (a *DefaultAPIService) MagnetUploadFilePostExecute(r ApiMagnetUploadFilePostRequest) (*MagnetUploadFilePost200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20011
+		localVarReturnValue  *MagnetUploadFilePost200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.MagnetUploadFilePost")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.MagnetUploadFilePost")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/magnet/upload/file"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"multipart/form-data"}
 
@@ -1699,23 +1712,21 @@ func (a *DefaultApiService) MagnetUploadFilePostExecute(r ApiMagnetUploadFilePos
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	var fileLocalVarFormFileName string
-	var fileLocalVarFileName     string
-	var fileLocalVarFileBytes    []byte
+	var filesLocalVarFormFileName string
+	var filesLocalVarFileName     string
+	var filesLocalVarFileBytes    []byte
 
-	fileLocalVarFormFileName = "[]file"
+	filesLocalVarFormFileName = "files[]"
+	filesLocalVarFile := r.files
 
-	var fileLocalVarFile *os.File
-	if r.file != nil {
-		fileLocalVarFile = *r.file
+	if filesLocalVarFile != nil {
+		fbs, _ := io.ReadAll(filesLocalVarFile)
+
+		filesLocalVarFileBytes = fbs
+		filesLocalVarFileName = filesLocalVarFile.Name()
+		filesLocalVarFile.Close()
+		formFiles = append(formFiles, formFile{fileBytes: filesLocalVarFileBytes, fileName: filesLocalVarFileName, formFileName: filesLocalVarFormFileName})
 	}
-	if fileLocalVarFile != nil {
-		fbs, _ := _ioutil.ReadAll(fileLocalVarFile)
-		fileLocalVarFileBytes = fbs
-		fileLocalVarFileName = fileLocalVarFile.Name()
-		fileLocalVarFile.Close()
-	}
-	formFiles = append(formFiles, formFile{fileBytes: fileLocalVarFileBytes, fileName: fileLocalVarFileName, formFileName: fileLocalVarFormFileName})
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -1726,15 +1737,15 @@ func (a *DefaultApiService) MagnetUploadFilePostExecute(r ApiMagnetUploadFilePos
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1743,7 +1754,7 @@ func (a *DefaultApiService) MagnetUploadFilePostExecute(r ApiMagnetUploadFilePos
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1754,8 +1765,8 @@ func (a *DefaultApiService) MagnetUploadFilePostExecute(r ApiMagnetUploadFilePos
 }
 
 type ApiMagnetUploadGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	magnets *[]string
 	apikey *string
@@ -1766,18 +1777,20 @@ func (r ApiMagnetUploadGetRequest) Agent(agent string) ApiMagnetUploadGetRequest
 	r.agent = &agent
 	return r
 }
+
 // Magnet(s) URI or hash. Must send magnet either in GET param or in POST data.
 func (r ApiMagnetUploadGetRequest) Magnets(magnets []string) ApiMagnetUploadGetRequest {
 	r.magnets = &magnets
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiMagnetUploadGetRequest) Apikey(apikey string) ApiMagnetUploadGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiMagnetUploadGetRequest) Execute() (InlineResponse20010, *_nethttp.Response, error) {
+func (r ApiMagnetUploadGetRequest) Execute() (*MagnetUploadGet200Response, *http.Response, error) {
 	return r.ApiService.MagnetUploadGetExecute(r)
 }
 
@@ -1786,10 +1799,10 @@ MagnetUploadGet Upload a magnet with its URI or hash.
 
 Upload a magnet with its URI or hash.<br /> You can either send the magnets in GET parameters, or in POST.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMagnetUploadGetRequest
 */
-func (a *DefaultApiService) MagnetUploadGet(ctx _context.Context) ApiMagnetUploadGetRequest {
+func (a *DefaultAPIService) MagnetUploadGet(ctx context.Context) ApiMagnetUploadGetRequest {
 	return ApiMagnetUploadGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1797,25 +1810,25 @@ func (a *DefaultApiService) MagnetUploadGet(ctx _context.Context) ApiMagnetUploa
 }
 
 // Execute executes the request
-//  @return InlineResponse20010
-func (a *DefaultApiService) MagnetUploadGetExecute(r ApiMagnetUploadGetRequest) (InlineResponse20010, *_nethttp.Response, error) {
+//  @return MagnetUploadGet200Response
+func (a *DefaultAPIService) MagnetUploadGetExecute(r ApiMagnetUploadGetRequest) (*MagnetUploadGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20010
+		localVarReturnValue  *MagnetUploadGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.MagnetUploadGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.MagnetUploadGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/magnet/upload"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -1824,18 +1837,18 @@ func (a *DefaultApiService) MagnetUploadGetExecute(r ApiMagnetUploadGetRequest) 
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	{
 		t := *r.magnets
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("magnets[]", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "magnets[]", s.Index(i).Interface(), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("magnets[]", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "magnets[]", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -1865,15 +1878,15 @@ func (a *DefaultApiService) MagnetUploadGetExecute(r ApiMagnetUploadGetRequest) 
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1882,7 +1895,7 @@ func (a *DefaultApiService) MagnetUploadGetExecute(r ApiMagnetUploadGetRequest) 
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1893,8 +1906,8 @@ func (a *DefaultApiService) MagnetUploadGetExecute(r ApiMagnetUploadGetRequest) 
 }
 
 type ApiUserGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	apikey *string
 }
@@ -1904,13 +1917,14 @@ func (r ApiUserGetRequest) Agent(agent string) ApiUserGetRequest {
 	r.agent = &agent
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiUserGetRequest) Apikey(apikey string) ApiUserGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiUserGetRequest) Execute() (InlineResponse2003, *_nethttp.Response, error) {
+func (r ApiUserGetRequest) Execute() (*UserGet200Response, *http.Response, error) {
 	return r.ApiService.UserGetExecute(r)
 }
 
@@ -1919,10 +1933,10 @@ UserGet Use this endpoint to get user informations.
 
 Use this endpoint to get user informations.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUserGetRequest
 */
-func (a *DefaultApiService) UserGet(ctx _context.Context) ApiUserGetRequest {
+func (a *DefaultAPIService) UserGet(ctx context.Context) ApiUserGetRequest {
 	return ApiUserGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1930,33 +1944,33 @@ func (a *DefaultApiService) UserGet(ctx _context.Context) ApiUserGetRequest {
 }
 
 // Execute executes the request
-//  @return InlineResponse2003
-func (a *DefaultApiService) UserGetExecute(r ApiUserGetRequest) (InlineResponse2003, *_nethttp.Response, error) {
+//  @return UserGet200Response
+func (a *DefaultAPIService) UserGetExecute(r ApiUserGetRequest) (*UserGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2003
+		localVarReturnValue  *UserGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.UserGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.UserGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/user"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -1984,15 +1998,15 @@ func (a *DefaultApiService) UserGetExecute(r ApiUserGetRequest) (InlineResponse2
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2001,7 +2015,7 @@ func (a *DefaultApiService) UserGetExecute(r ApiUserGetRequest) (InlineResponse2
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -2012,8 +2026,8 @@ func (a *DefaultApiService) UserGetExecute(r ApiUserGetRequest) (InlineResponse2
 }
 
 type ApiUserHistoryDeleteGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	apikey *string
 }
@@ -2023,13 +2037,14 @@ func (r ApiUserHistoryDeleteGetRequest) Agent(agent string) ApiUserHistoryDelete
 	r.agent = &agent
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiUserHistoryDeleteGetRequest) Apikey(apikey string) ApiUserHistoryDeleteGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiUserHistoryDeleteGetRequest) Execute() (InlineResponse20019, *_nethttp.Response, error) {
+func (r ApiUserHistoryDeleteGetRequest) Execute() (*UserHistoryDeleteGet200Response, *http.Response, error) {
 	return r.ApiService.UserHistoryDeleteGetExecute(r)
 }
 
@@ -2038,10 +2053,10 @@ UserHistoryDeleteGet Use this endpoint to delete all links currently in your rec
 
 Use this endpoint to delete all links currently in your recent links history.<br /> Links older than 3 days are automatically deleted from the recent history.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUserHistoryDeleteGetRequest
 */
-func (a *DefaultApiService) UserHistoryDeleteGet(ctx _context.Context) ApiUserHistoryDeleteGetRequest {
+func (a *DefaultAPIService) UserHistoryDeleteGet(ctx context.Context) ApiUserHistoryDeleteGetRequest {
 	return ApiUserHistoryDeleteGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2049,33 +2064,33 @@ func (a *DefaultApiService) UserHistoryDeleteGet(ctx _context.Context) ApiUserHi
 }
 
 // Execute executes the request
-//  @return InlineResponse20019
-func (a *DefaultApiService) UserHistoryDeleteGetExecute(r ApiUserHistoryDeleteGetRequest) (InlineResponse20019, *_nethttp.Response, error) {
+//  @return UserHistoryDeleteGet200Response
+func (a *DefaultAPIService) UserHistoryDeleteGetExecute(r ApiUserHistoryDeleteGetRequest) (*UserHistoryDeleteGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20019
+		localVarReturnValue  *UserHistoryDeleteGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.UserHistoryDeleteGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.UserHistoryDeleteGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/user/history/delete"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -2103,15 +2118,15 @@ func (a *DefaultApiService) UserHistoryDeleteGetExecute(r ApiUserHistoryDeleteGe
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2120,7 +2135,7 @@ func (a *DefaultApiService) UserHistoryDeleteGetExecute(r ApiUserHistoryDeleteGe
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -2131,8 +2146,8 @@ func (a *DefaultApiService) UserHistoryDeleteGetExecute(r ApiUserHistoryDeleteGe
 }
 
 type ApiUserHistoryGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	apikey *string
 }
@@ -2142,13 +2157,14 @@ func (r ApiUserHistoryGetRequest) Agent(agent string) ApiUserHistoryGetRequest {
 	r.agent = &agent
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiUserHistoryGetRequest) Apikey(apikey string) ApiUserHistoryGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiUserHistoryGetRequest) Execute() (InlineResponse20016, *_nethttp.Response, error) {
+func (r ApiUserHistoryGetRequest) Execute() (*UserLinksGet200Response, *http.Response, error) {
 	return r.ApiService.UserHistoryGetExecute(r)
 }
 
@@ -2157,10 +2173,10 @@ UserHistoryGet Use this endpoint to get recent links.
 
 Use this endpoint to get recent links.<br /> Recent link logging being disabled by default,<br /> this will return nothing until history logging has been activated in your account settings.<br /> <br /> Links older than 3 days are automatically deleted from the recent history.<br /> To keep links in your account, use the Saved links.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUserHistoryGetRequest
 */
-func (a *DefaultApiService) UserHistoryGet(ctx _context.Context) ApiUserHistoryGetRequest {
+func (a *DefaultAPIService) UserHistoryGet(ctx context.Context) ApiUserHistoryGetRequest {
 	return ApiUserHistoryGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2168,33 +2184,33 @@ func (a *DefaultApiService) UserHistoryGet(ctx _context.Context) ApiUserHistoryG
 }
 
 // Execute executes the request
-//  @return InlineResponse20016
-func (a *DefaultApiService) UserHistoryGetExecute(r ApiUserHistoryGetRequest) (InlineResponse20016, *_nethttp.Response, error) {
+//  @return UserLinksGet200Response
+func (a *DefaultAPIService) UserHistoryGetExecute(r ApiUserHistoryGetRequest) (*UserLinksGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20016
+		localVarReturnValue  *UserLinksGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.UserHistoryGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.UserHistoryGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/user/history"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -2222,15 +2238,15 @@ func (a *DefaultApiService) UserHistoryGetExecute(r ApiUserHistoryGetRequest) (I
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2239,7 +2255,7 @@ func (a *DefaultApiService) UserHistoryGetExecute(r ApiUserHistoryGetRequest) (I
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -2250,8 +2266,8 @@ func (a *DefaultApiService) UserHistoryGetExecute(r ApiUserHistoryGetRequest) (I
 }
 
 type ApiUserHostsGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	apikey *string
 	hostOnly *string
@@ -2262,18 +2278,20 @@ func (r ApiUserHostsGetRequest) Agent(agent string) ApiUserHostsGetRequest {
 	r.agent = &agent
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiUserHostsGetRequest) Apikey(apikey string) ApiUserHostsGetRequest {
 	r.apikey = &apikey
 	return r
 }
+
 // Endpoint will only return \&quot;hosts\&quot; data
 func (r ApiUserHostsGetRequest) HostOnly(hostOnly string) ApiUserHostsGetRequest {
 	r.hostOnly = &hostOnly
 	return r
 }
 
-func (r ApiUserHostsGetRequest) Execute() (InlineResponse200, *_nethttp.Response, error) {
+func (r ApiUserHostsGetRequest) Execute() (*HostsGet200Response, *http.Response, error) {
 	return r.ApiService.UserHostsGetExecute(r)
 }
 
@@ -2282,10 +2300,10 @@ UserHostsGet This endpoint retrieves a complete list of all available hosts for 
 
 This endpoint retrieves a complete list of all available hosts for this user.<br /> Depending of the account subscription status (free user, trial mode, premium user),<br /> the list and limitations will vary.<br /> <br /> The limits and quota are updated in real time. Use this page to have an<br /> up-to-date list of service the user can use on Alldebrid.<br /> <br /> Quotas will reset every day for premium users.<br />
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUserHostsGetRequest
 */
-func (a *DefaultApiService) UserHostsGet(ctx _context.Context) ApiUserHostsGetRequest {
+func (a *DefaultAPIService) UserHostsGet(ctx context.Context) ApiUserHostsGetRequest {
 	return ApiUserHostsGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2293,35 +2311,35 @@ func (a *DefaultApiService) UserHostsGet(ctx _context.Context) ApiUserHostsGetRe
 }
 
 // Execute executes the request
-//  @return InlineResponse200
-func (a *DefaultApiService) UserHostsGetExecute(r ApiUserHostsGetRequest) (InlineResponse200, *_nethttp.Response, error) {
+//  @return HostsGet200Response
+func (a *DefaultAPIService) UserHostsGetExecute(r ApiUserHostsGetRequest) (*HostsGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse200
+		localVarReturnValue  *HostsGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.UserHostsGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.UserHostsGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/user/hosts"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	if r.hostOnly != nil {
-		localVarQueryParams.Add("hostOnly", parameterToString(*r.hostOnly, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "hostOnly", r.hostOnly, "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2350,15 +2368,15 @@ func (a *DefaultApiService) UserHostsGetExecute(r ApiUserHostsGetRequest) (Inlin
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2367,7 +2385,7 @@ func (a *DefaultApiService) UserHostsGetExecute(r ApiUserHostsGetRequest) (Inlin
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -2378,8 +2396,8 @@ func (a *DefaultApiService) UserHostsGetExecute(r ApiUserHostsGetRequest) (Inlin
 }
 
 type ApiUserLinksDeleteGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	apikey *string
 	link *string
@@ -2391,23 +2409,26 @@ func (r ApiUserLinksDeleteGetRequest) Agent(agent string) ApiUserLinksDeleteGetR
 	r.agent = &agent
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiUserLinksDeleteGetRequest) Apikey(apikey string) ApiUserLinksDeleteGetRequest {
 	r.apikey = &apikey
 	return r
 }
+
 // Link to delete.
 func (r ApiUserLinksDeleteGetRequest) Link(link string) ApiUserLinksDeleteGetRequest {
 	r.link = &link
 	return r
 }
+
 // Links to delete.
 func (r ApiUserLinksDeleteGetRequest) Link2(link2 []string) ApiUserLinksDeleteGetRequest {
 	r.link2 = &link2
 	return r
 }
 
-func (r ApiUserLinksDeleteGetRequest) Execute() (InlineResponse20018, *_nethttp.Response, error) {
+func (r ApiUserLinksDeleteGetRequest) Execute() (*UserLinksDeleteGet200Response, *http.Response, error) {
 	return r.ApiService.UserLinksDeleteGetExecute(r)
 }
 
@@ -2416,10 +2437,10 @@ UserLinksDeleteGet Delete a saved link.
 
 Delete a saved link.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUserLinksDeleteGetRequest
 */
-func (a *DefaultApiService) UserLinksDeleteGet(ctx _context.Context) ApiUserLinksDeleteGetRequest {
+func (a *DefaultAPIService) UserLinksDeleteGet(ctx context.Context) ApiUserLinksDeleteGetRequest {
 	return ApiUserLinksDeleteGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2427,45 +2448,45 @@ func (a *DefaultApiService) UserLinksDeleteGet(ctx _context.Context) ApiUserLink
 }
 
 // Execute executes the request
-//  @return InlineResponse20018
-func (a *DefaultApiService) UserLinksDeleteGetExecute(r ApiUserLinksDeleteGetRequest) (InlineResponse20018, *_nethttp.Response, error) {
+//  @return UserLinksDeleteGet200Response
+func (a *DefaultAPIService) UserLinksDeleteGetExecute(r ApiUserLinksDeleteGetRequest) (*UserLinksDeleteGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20018
+		localVarReturnValue  *UserLinksDeleteGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.UserLinksDeleteGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.UserLinksDeleteGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/user/links/delete"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	if r.link != nil {
-		localVarQueryParams.Add("link", parameterToString(*r.link, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "link", r.link, "")
 	}
 	if r.link2 != nil {
 		t := *r.link2
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("link[]", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "link[]", s.Index(i).Interface(), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("link[]", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "link[]", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -2495,15 +2516,15 @@ func (a *DefaultApiService) UserLinksDeleteGetExecute(r ApiUserLinksDeleteGetReq
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2512,7 +2533,7 @@ func (a *DefaultApiService) UserLinksDeleteGetExecute(r ApiUserLinksDeleteGetReq
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -2523,8 +2544,8 @@ func (a *DefaultApiService) UserLinksDeleteGetExecute(r ApiUserLinksDeleteGetReq
 }
 
 type ApiUserLinksGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	apikey *string
 }
@@ -2534,13 +2555,14 @@ func (r ApiUserLinksGetRequest) Agent(agent string) ApiUserLinksGetRequest {
 	r.agent = &agent
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiUserLinksGetRequest) Apikey(apikey string) ApiUserLinksGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiUserLinksGetRequest) Execute() (InlineResponse20016, *_nethttp.Response, error) {
+func (r ApiUserLinksGetRequest) Execute() (*UserLinksGet200Response, *http.Response, error) {
 	return r.ApiService.UserLinksGetExecute(r)
 }
 
@@ -2549,10 +2571,10 @@ UserLinksGet Use this endpoint to get links the user saved for later use.
 
 Use this endpoint to get links the user saved for later use.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUserLinksGetRequest
 */
-func (a *DefaultApiService) UserLinksGet(ctx _context.Context) ApiUserLinksGetRequest {
+func (a *DefaultAPIService) UserLinksGet(ctx context.Context) ApiUserLinksGetRequest {
 	return ApiUserLinksGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2560,33 +2582,33 @@ func (a *DefaultApiService) UserLinksGet(ctx _context.Context) ApiUserLinksGetRe
 }
 
 // Execute executes the request
-//  @return InlineResponse20016
-func (a *DefaultApiService) UserLinksGetExecute(r ApiUserLinksGetRequest) (InlineResponse20016, *_nethttp.Response, error) {
+//  @return UserLinksGet200Response
+func (a *DefaultAPIService) UserLinksGetExecute(r ApiUserLinksGetRequest) (*UserLinksGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20016
+		localVarReturnValue  *UserLinksGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.UserLinksGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.UserLinksGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/user/links"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -2614,15 +2636,15 @@ func (a *DefaultApiService) UserLinksGetExecute(r ApiUserLinksGetRequest) (Inlin
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2631,7 +2653,7 @@ func (a *DefaultApiService) UserLinksGetExecute(r ApiUserLinksGetRequest) (Inlin
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -2642,8 +2664,8 @@ func (a *DefaultApiService) UserLinksGetExecute(r ApiUserLinksGetRequest) (Inlin
 }
 
 type ApiUserLinksSaveGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	link *[]string
 	apikey *string
@@ -2654,18 +2676,20 @@ func (r ApiUserLinksSaveGetRequest) Agent(agent string) ApiUserLinksSaveGetReque
 	r.agent = &agent
 	return r
 }
+
 // Links to save.
 func (r ApiUserLinksSaveGetRequest) Link(link []string) ApiUserLinksSaveGetRequest {
 	r.link = &link
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiUserLinksSaveGetRequest) Apikey(apikey string) ApiUserLinksSaveGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiUserLinksSaveGetRequest) Execute() (InlineResponse20017, *_nethttp.Response, error) {
+func (r ApiUserLinksSaveGetRequest) Execute() (*UserLinksSaveGet200Response, *http.Response, error) {
 	return r.ApiService.UserLinksSaveGetExecute(r)
 }
 
@@ -2674,10 +2698,10 @@ UserLinksSaveGet Save a link.
 
 Save a link.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUserLinksSaveGetRequest
 */
-func (a *DefaultApiService) UserLinksSaveGet(ctx _context.Context) ApiUserLinksSaveGetRequest {
+func (a *DefaultAPIService) UserLinksSaveGet(ctx context.Context) ApiUserLinksSaveGetRequest {
 	return ApiUserLinksSaveGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2685,25 +2709,25 @@ func (a *DefaultApiService) UserLinksSaveGet(ctx _context.Context) ApiUserLinksS
 }
 
 // Execute executes the request
-//  @return InlineResponse20017
-func (a *DefaultApiService) UserLinksSaveGetExecute(r ApiUserLinksSaveGetRequest) (InlineResponse20017, *_nethttp.Response, error) {
+//  @return UserLinksSaveGet200Response
+func (a *DefaultAPIService) UserLinksSaveGetExecute(r ApiUserLinksSaveGetRequest) (*UserLinksSaveGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse20017
+		localVarReturnValue  *UserLinksSaveGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.UserLinksSaveGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.UserLinksSaveGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/user/links/save"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -2712,18 +2736,18 @@ func (a *DefaultApiService) UserLinksSaveGetExecute(r ApiUserLinksSaveGetRequest
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
 	{
 		t := *r.link
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
-				localVarQueryParams.Add("link[]", parameterToString(s.Index(i), "multi"))
+				parameterAddToHeaderOrQuery(localVarQueryParams, "link[]", s.Index(i).Interface(), "multi")
 			}
 		} else {
-			localVarQueryParams.Add("link[]", parameterToString(t, "multi"))
+			parameterAddToHeaderOrQuery(localVarQueryParams, "link[]", t, "multi")
 		}
 	}
 	// to determine the Content-Type header
@@ -2753,15 +2777,15 @@ func (a *DefaultApiService) UserLinksSaveGetExecute(r ApiUserLinksSaveGetRequest
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2770,7 +2794,7 @@ func (a *DefaultApiService) UserLinksSaveGetExecute(r ApiUserLinksSaveGetRequest
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -2781,8 +2805,8 @@ func (a *DefaultApiService) UserLinksSaveGetExecute(r ApiUserLinksSaveGetRequest
 }
 
 type ApiUserNotificationClearGetRequest struct {
-	ctx _context.Context
-	ApiService *DefaultApiService
+	ctx context.Context
+	ApiService *DefaultAPIService
 	agent *string
 	code *string
 	apikey *string
@@ -2793,18 +2817,20 @@ func (r ApiUserNotificationClearGetRequest) Agent(agent string) ApiUserNotificat
 	r.agent = &agent
 	return r
 }
+
 // Notification code to clear
 func (r ApiUserNotificationClearGetRequest) Code(code string) ApiUserNotificationClearGetRequest {
 	r.code = &code
 	return r
 }
+
 // Deprecated User apikey (Use Bearer Auth in header).
 func (r ApiUserNotificationClearGetRequest) Apikey(apikey string) ApiUserNotificationClearGetRequest {
 	r.apikey = &apikey
 	return r
 }
 
-func (r ApiUserNotificationClearGetRequest) Execute() (InlineResponse2004, *_nethttp.Response, error) {
+func (r ApiUserNotificationClearGetRequest) Execute() (*UserNotificationClearGet200Response, *http.Response, error) {
 	return r.ApiService.UserNotificationClearGetExecute(r)
 }
 
@@ -2813,10 +2839,10 @@ UserNotificationClearGet This endpoint clears a user notification with its code.
 
 This endpoint clears a user notification with its code. Current notifications codes can be retreive from the /user endpoint.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiUserNotificationClearGetRequest
 */
-func (a *DefaultApiService) UserNotificationClearGet(ctx _context.Context) ApiUserNotificationClearGetRequest {
+func (a *DefaultAPIService) UserNotificationClearGet(ctx context.Context) ApiUserNotificationClearGetRequest {
 	return ApiUserNotificationClearGetRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2824,25 +2850,25 @@ func (a *DefaultApiService) UserNotificationClearGet(ctx _context.Context) ApiUs
 }
 
 // Execute executes the request
-//  @return InlineResponse2004
-func (a *DefaultApiService) UserNotificationClearGetExecute(r ApiUserNotificationClearGetRequest) (InlineResponse2004, *_nethttp.Response, error) {
+//  @return UserNotificationClearGet200Response
+func (a *DefaultAPIService) UserNotificationClearGetExecute(r ApiUserNotificationClearGetRequest) (*UserNotificationClearGet200Response, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  InlineResponse2004
+		localVarReturnValue  *UserNotificationClearGet200Response
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.UserNotificationClearGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultAPIService.UserNotificationClearGet")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/user/notification/clear"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 	if r.agent == nil {
 		return localVarReturnValue, nil, reportError("agent is required and must be specified")
 	}
@@ -2851,10 +2877,10 @@ func (a *DefaultApiService) UserNotificationClearGetExecute(r ApiUserNotificatio
 	}
 
 	if r.apikey != nil {
-		localVarQueryParams.Add("apikey", parameterToString(*r.apikey, ""))
+		parameterAddToHeaderOrQuery(localVarQueryParams, "apikey", r.apikey, "")
 	}
-	localVarQueryParams.Add("agent", parameterToString(*r.agent, ""))
-	localVarQueryParams.Add("code", parameterToString(*r.code, ""))
+	parameterAddToHeaderOrQuery(localVarQueryParams, "agent", r.agent, "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "code", r.code, "")
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -2882,15 +2908,15 @@ func (a *DefaultApiService) UserNotificationClearGetExecute(r ApiUserNotificatio
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2899,7 +2925,7 @@ func (a *DefaultApiService) UserNotificationClearGetExecute(r ApiUserNotificatio
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

@@ -1145,7 +1145,7 @@ paths:
             schema:
               type: object
               properties:
-                "[]file":
+                "files[]":
                   type: string
                   format: binary
       # TODO: wait for this issue to be merge to reenable this feature:
@@ -1156,7 +1156,7 @@ paths:
       #       schema:
       #         type: object
       #         properties:
-      #           "[]file":
+      #           "files[]":
       #             type: array
       #             items:
       #               type: string
@@ -1437,13 +1437,11 @@ paths:
           required: true
           description: Your software user-agent.
         - in: query
-          name: ids
+          name: id
           required: true
-          description: Array of Magnet ID.
+          description: Magnet ID
           schema:
-            type: array
-            items:
-              type: string
+            type: string
       responses:
         "200":
           description: >-

@@ -1,19 +1,19 @@
 openapi: 3.0.0
 info:
-  description: Welcome to the OpenAPI Alldebrid API v4 !<br /> You can use this API
-    to access various Alldebrid services from custom applications or scripts.<br />
-    <br /> API is organized around REST,<br /> returns JSON-encoded responses and
-    use standard HTTP response codes.<br /> <br /> All calls are to be made on the
-    HTTPS endpoints.<br /> Some are public, others require to be authentificated with
-    an apikey (see Authentication).<br /> <br /> You must also identify your apps
-    or script with a meaningfull agent parameter.<br /> <br /> This API version is
-    namespaced as v4, as such all endpoint start with /v4/,<br /> such like http://api.alldebrid.com/v4/ping?agent=apiShowcase.<br
-    /> <br /> This API v4 should be the final version regarding general response format
-    and errors (hopefully).<br />
+  description: "Welcome to the OpenAPI Alldebrid API v4 !<br /> You can use this API\
+    \ to access various Alldebrid services from custom applications or scripts.<br\
+    \ /> <br /> API is organized around REST,<br /> returns JSON-encoded responses\
+    \ and use standard HTTP response codes.<br /> <br /> All calls are to be made\
+    \ on the HTTPS endpoints.<br /> Some are public, others require to be authentificated\
+    \ with an apikey (see Authentication).<br /> <br /> You must also identify your\
+    \ apps or script with a meaningfull agent parameter.<br /> <br /> This API version\
+    \ is namespaced as v4, as such all endpoint start with /v4/,<br /> such like http://api.alldebrid.com/v4/ping?agent=apiShowcase.<br\
+    \ /> <br /> This API v4 should be the final version regarding general response\
+    \ format and errors (hopefully).<br />"
   title: Alldebrid API
   version: 4.0.0
 servers:
-- description: Optional server description, e.g. Main (production) server
+- description: "Optional server description, e.g. Main (production) server"
   url: https://api.alldebrid.com/v4
 paths:
   /hosts:
@@ -43,7 +43,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/_hosts_get_200_response'
           description: Use this endpoint to retrieve informations about what hosts
             we support and all related informations about it.
       summary: Use this endpoint to retrieve informations about what hosts we support.
@@ -69,15 +69,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_1'
+                $ref: '#/components/schemas/_hosts_domains_get_200_response'
           description: Use this endpoint to retrieve informations about what hosts
             we support and all related informations about it.
       summary: Use this endpoint to only retrieve the list of supported hosts domains
         and redirectors as an array.
   /hosts/priority:
     get:
-      description: Use this endpoint to retrieve an ordered list of main domain of
-        hosts, from more open to more restricted.
+      description: "Use this endpoint to retrieve an ordered list of main domain of\
+        \ hosts, from more open to more restricted."
       parameters:
       - description: Your software user-agent.
         explode: true
@@ -93,11 +93,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_2'
+                $ref: '#/components/schemas/_hosts_priority_get_200_response'
           description: Use this endpoint to retrieve informations about what hosts
             we support and all related informations about it.
-      summary: Not all hosts are created equal, so some hosts are more limited than
-        other.
+      summary: "Not all hosts are created equal, so some hosts are more limited than\
+        \ other."
   /user:
     get:
       description: Use this endpoint to get user informations.
@@ -124,7 +124,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_3'
+                $ref: '#/components/schemas/_user_get_200_response'
           description: Use this endpoint to retrieve informations about what hosts
             we support and all related informations about it.
       security:
@@ -132,12 +132,12 @@ paths:
       summary: Use this endpoint to get user informations.
   /user/hosts:
     get:
-      description: This endpoint retrieves a complete list of all available hosts
-        for this user.<br /> Depending of the account subscription status (free user,
-        trial mode, premium user),<br /> the list and limitations will vary.<br />
-        <br /> The limits and quota are updated in real time. Use this page to have
-        an<br /> up-to-date list of service the user can use on Alldebrid.<br /> <br
-        /> Quotas will reset every day for premium users.<br />
+      description: "This endpoint retrieves a complete list of all available hosts\
+        \ for this user.<br /> Depending of the account subscription status (free\
+        \ user, trial mode, premium user),<br /> the list and limitations will vary.<br\
+        \ /> <br /> The limits and quota are updated in real time. Use this page to\
+        \ have an<br /> up-to-date list of service the user can use on Alldebrid.<br\
+        \ /> <br /> Quotas will reset every day for premium users.<br />"
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -169,7 +169,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/_hosts_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -211,7 +211,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_4'
+                $ref: '#/components/schemas/_user_notification_clear_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -219,12 +219,12 @@ paths:
       summary: This endpoint clears a user notification with its code.
   /link/infos:
     get:
-      description: Use this endpoint to retrieve informations about a link.<br />
-        If it is in our systems, you'll have the filename and size (if available).<br
-        /> <br /> If the host is not supported or the link is down, an error will
-        be<br /> returned for that link.<br /> <br /> This endpoint only support host
-        links, not redirectors links. Use the<br /> link/redirector endpoint for this.<br
-        />
+      description: "Use this endpoint to retrieve informations about a link.<br />\
+        \ If it is in our systems, you'll have the filename and size (if available).<br\
+        \ /> <br /> If the host is not supported or the link is down, an error will\
+        \ be<br /> returned for that link.<br /> <br /> This endpoint only support\
+        \ host links, not redirectors links. Use the<br /> link/redirector endpoint\
+        \ for this.<br />"
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -254,7 +254,7 @@ paths:
       - description: The link or array of links you request informations about.
         explode: true
         in: query
-        name: link[]
+        name: "link[]"
         required: true
         schema:
           items:
@@ -266,7 +266,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_5'
+                $ref: '#/components/schemas/_link_infos_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -307,7 +307,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_6'
+                $ref: '#/components/schemas/_link_redirector_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -316,8 +316,8 @@ paths:
         protector.
   /link/unlock:
     get:
-      description: This endpoint can return a delayed ID. In that case, you must follow
-        the delayed link flow.
+      description: "This endpoint can return a delayed ID. In that case, you must\
+        \ follow the delayed link flow."
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -357,7 +357,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_7'
+                $ref: '#/components/schemas/_link_unlock_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -365,13 +365,13 @@ paths:
       summary: This endpoint unlocks a given link.
   /link/streaming:
     get:
-      description: 'First hit the usual link/unlock endpoint. Two cases:<br /> <br
-        /> Stream link has only one quality : downloading link is available immediatly.<br
-        /> <br /> OR<br /> <br /> Stream links has multiple qualities : you must select
-        the desired<br /> quality to obtain a download link or delayed id by using
-        the<br /> link/streaming endpoint.<br /> <br /> Depending of the stream website,
-        you''ll either get a download link, or a<br /> delayed id (see Delayed link
-        section for delayed links).<br />'
+      description: "First hit the usual link/unlock endpoint. Two cases:<br /> <br\
+        \ /> Stream link has only one quality : downloading link is available immediatly.<br\
+        \ /> <br /> OR<br /> <br /> Stream links has multiple qualities : you must\
+        \ select the desired<br /> quality to obtain a download link or delayed id\
+        \ by using the<br /> link/streaming endpoint.<br /> <br /> Depending of the\
+        \ stream website, you'll either get a download link, or a<br /> delayed id\
+        \ (see Delayed link section for delayed links).<br />"
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -412,7 +412,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_8'
+                $ref: '#/components/schemas/_link_streaming_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -420,10 +420,10 @@ paths:
       summary: The unlocking flow for streaming link is a bit more complex.
   /link/delayed:
     get:
-      description: This endpoint give the status of a delayed link.<br /> <br /> Some
-        links need time to generate, this endpoint send the status of such delayed
-        links.<br /> <br /> You should pool every 5 seconds or more the link/delayed
-        endpoint until given the download link.<br />
+      description: "This endpoint give the status of a delayed link.<br /> <br />\
+        \ Some links need time to generate, this endpoint send the status of such\
+        \ delayed links.<br /> <br /> You should pool every 5 seconds or more the\
+        \ link/delayed endpoint until given the download link.<br />"
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -455,7 +455,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_9'
+                $ref: '#/components/schemas/_link_delayed_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -463,8 +463,8 @@ paths:
       summary: This endpoint give the status of a delayed link.
   /magnet/upload:
     get:
-      description: Upload a magnet with its URI or hash.<br /> You can either send
-        the magnets in GET parameters, or in POST.<br />
+      description: "Upload a magnet with its URI or hash.<br /> You can either send\
+        \ the magnets in GET parameters, or in POST.<br />"
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -487,7 +487,7 @@ paths:
           in POST data.
         explode: true
         in: query
-        name: magnets[]
+        name: "magnets[]"
         required: true
         schema:
           items:
@@ -499,7 +499,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_10'
+                $ref: '#/components/schemas/_magnet_upload_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -528,21 +528,16 @@ paths:
           type: string
         style: form
       requestBody:
-        $ref: '#/components/requestBodies/inline_object'
         content:
           multipart/form-data:
             schema:
-              properties:
-                '[]file':
-                  format: binary
-                  type: string
-              type: object
+              $ref: '#/components/schemas/_magnet_upload_file_post_request'
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_11'
+                $ref: '#/components/schemas/_magnet_upload_file_post_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -550,8 +545,8 @@ paths:
       summary: Upload torrent files.
   /magnet/status:
     get:
-      description: 'Get the status of current magnets, or only one if you specify
-        a magnet ID.<br /> !TODO: Add live magnet status.<br />'
+      description: "Get the status of current magnets, or only one if you specify\
+        \ a magnet ID.<br /> !TODO: Add live magnet status.<br />"
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -578,7 +573,7 @@ paths:
         schema:
           type: string
         style: form
-      - description: Magnets status filter. Either active, ready, expired or error
+      - description: "Magnets status filter. Either active, ready, expired or error"
         explode: true
         in: query
         name: status
@@ -607,13 +602,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_12'
+                $ref: '#/components/schemas/_magnet_status_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
       - bearerAuth: []
-      summary: Get the status of current magnets, or only one if you specify a magnet
-        ID.
+      summary: "Get the status of current magnets, or only one if you specify a magnet\
+        \ ID."
   /magnet/delete:
     get:
       description: Delete a magnet.
@@ -648,7 +643,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_13'
+                $ref: '#/components/schemas/_magnet_delete_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -656,7 +651,7 @@ paths:
       summary: Delete a magnet.
   /magnet/restart:
     get:
-      description: Restart a failed magnet, or multiple failed magnets at once.
+      description: "Restart a failed magnet, or multiple failed magnets at once."
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -675,31 +670,29 @@ paths:
           default: open-alldebrid
           type: string
         style: form
-      - description: Array of Magnet ID.
+      - description: Magnet ID
         explode: true
         in: query
-        name: ids
+        name: id
         required: true
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_14'
+                $ref: '#/components/schemas/_magnet_restart_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
       - bearerAuth: []
-      summary: Restart a failed magnet, or multiple failed magnets at once.
+      summary: "Restart a failed magnet, or multiple failed magnets at once."
   /magnet/instant:
     get:
-      description: Check if a magnet is available instantly.<br /> You can either
-        send the magnets in GET parameters, or in POST.<br />
+      description: "Check if a magnet is available instantly.<br /> You can either\
+        \ send the magnets in GET parameters, or in POST.<br />"
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -718,11 +711,11 @@ paths:
           default: open-alldebrid
           type: string
         style: form
-      - description: Magnets URI or hash you wish to check instant availability, can
-          be one or many links
+      - description: "Magnets URI or hash you wish to check instant availability,\
+          \ can be one or many links"
         explode: true
         in: query
-        name: magnets[]
+        name: "magnets[]"
         required: true
         schema:
           items:
@@ -734,7 +727,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_15'
+                $ref: '#/components/schemas/_magnet_instant_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -766,7 +759,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_16'
+                $ref: '#/components/schemas/_user_links_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -796,7 +789,7 @@ paths:
       - description: Links to save.
         explode: true
         in: query
-        name: link[]
+        name: "link[]"
         required: true
         schema:
           items:
@@ -808,7 +801,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_17'
+                $ref: '#/components/schemas/_user_links_save_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -846,7 +839,7 @@ paths:
       - description: Links to delete.
         explode: true
         in: query
-        name: link[]
+        name: "link[]"
         required: false
         schema:
           items:
@@ -858,7 +851,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_18'
+                $ref: '#/components/schemas/_user_links_delete_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -866,11 +859,11 @@ paths:
       summary: Delete a saved link.
   /user/history:
     get:
-      description: Use this endpoint to get recent links.<br /> Recent link logging
-        being disabled by default,<br /> this will return nothing until history logging
-        has been activated in your account settings.<br /> <br /> Links older than
-        3 days are automatically deleted from the recent history.<br /> To keep links
-        in your account, use the Saved links.<br />
+      description: "Use this endpoint to get recent links.<br /> Recent link logging\
+        \ being disabled by default,<br /> this will return nothing until history\
+        \ logging has been activated in your account settings.<br /> <br /> Links\
+        \ older than 3 days are automatically deleted from the recent history.<br\
+        \ /> To keep links in your account, use the Saved links.<br />"
       parameters:
       - description: Deprecated User apikey (Use Bearer Auth in header).
         explode: true
@@ -894,7 +887,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_16'
+                $ref: '#/components/schemas/_user_links_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -928,7 +921,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200_19'
+                $ref: '#/components/schemas/_user_history_delete_get_200_response'
           description: This endpoint retrieves a complete list of all available hosts
             for this user
       security:
@@ -936,17 +929,11 @@ paths:
       summary: Use this endpoint to delete all links currently in your recent links
         history.
 components:
-  requestBodies:
-    inline_object:
-      content:
-        multipart/form-data:
-          schema:
-            $ref: '#/components/schemas/inline_object'
   schemas:
     ErrorCodes:
-      description: You can find all possible errors here, available in PHP array and
-        JSON format if needed.<br /> Some errors will return an HTTP code 401 or 429,
-        depending of the error.<br />
+      description: "You can find all possible errors here, available in PHP array\
+        \ and JSON format if needed.<br /> Some errors will return an HTTP code 401\
+        \ or 429, depending of the error.<br />"
       enum:
       - GENERIC
       - "404"
@@ -990,12 +977,12 @@ components:
       - NO_SERVER
       - MISSING_NOTIF_ENDPOINT
       type: string
-    inline_response_200_data_hosts:
+    _hosts_get_200_response_data_hosts_value:
       example:
-        regexp: (uptobox\.com/[0-9a-zA-Z]+(/.*)?)|uptostream\.com/([0-9a-zA-Z]{12})
+        regexp: "(uptobox\\.com/[0-9a-zA-Z]+(/.*)?)|uptostream\\.com/([0-9a-zA-Z]{12})"
         regexps:
-        - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
-        - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
+        - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
+        - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
         name: uptobox
         domains:
         - uptobox.com
@@ -1015,22 +1002,23 @@ components:
             type: string
           type: array
         regexp:
-          example: (uptobox\.com/[0-9a-zA-Z]+(/.*)?)|uptostream\.com/([0-9a-zA-Z]{12})
+          example: "(uptobox\\.com/[0-9a-zA-Z]+(/.*)?)|uptostream\\.com/([0-9a-zA-Z]{12})"
           type: string
         regexps:
           items:
-            example: uptostream\\.com/iframe/([0-9a-zA-Z]{12})
+            example: "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
             type: string
           type: array
         status:
           type: boolean
       type: object
-    inline_response_200_data_streams:
+    _hosts_get_200_response_data_streams_value:
       example:
-        regexp: https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)", "https?:\/\/(?:www\\.)?youtube\\.com\/feed\/history|:ythistory
+        regexp: "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)\"\
+          , \"https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/feed\\/history|:ythistory"
         regexps:
-        - https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)
-        - https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)
+        - "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)"
+        - "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)"
         name: youtube
         domains:
         - youtube.be
@@ -1050,22 +1038,24 @@ components:
             type: string
           type: array
         regexp:
-          example: https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)", "https?:\/\/(?:www\\.)?youtube\\.com\/feed\/history|:ythistory
+          example: "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)\"\
+            , \"https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/feed\\/history|:ythistory"
           type: string
         regexps:
           items:
-            example: https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)
+            example: "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)"
             type: string
           type: array
         status:
           type: boolean
       type: object
-    inline_response_200_data_redirectors:
+    _hosts_get_200_response_data_redirectors_value:
       example:
-        regexp: (dl-protecte\.com/[0-9a-zA-Z]+)|(protect-lien\.com/[0-9a-zA-Z]+)|dl-protecte\.org/([0-9a-zA-Z]+)
+        regexp: "(dl-protecte\\.com/[0-9a-zA-Z]+)|(protect-lien\\.com/[0-9a-zA-Z]+)|dl-protecte\\\
+          .org/([0-9a-zA-Z]+)"
         regexps:
-        - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
-        - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
+        - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
+        - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
         name: dlprotecte
         domains:
         - dl-protecte.com
@@ -1085,24 +1075,26 @@ components:
             type: string
           type: array
         regexp:
-          example: (dl-protecte\.com/[0-9a-zA-Z]+)|(protect-lien\.com/[0-9a-zA-Z]+)|dl-protecte\.org/([0-9a-zA-Z]+)
+          example: "(dl-protecte\\.com/[0-9a-zA-Z]+)|(protect-lien\\.com/[0-9a-zA-Z]+)|dl-protecte\\\
+            .org/([0-9a-zA-Z]+)"
           type: string
         regexps:
           items:
-            example: uptostream\\.com/iframe/([0-9a-zA-Z]{12})
+            example: "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
             type: string
           type: array
         status:
           type: boolean
       type: object
-    inline_response_200_data:
+    _hosts_get_200_response_data:
       example:
         redirectors:
           key:
-            regexp: (dl-protecte\.com/[0-9a-zA-Z]+)|(protect-lien\.com/[0-9a-zA-Z]+)|dl-protecte\.org/([0-9a-zA-Z]+)
+            regexp: "(dl-protecte\\.com/[0-9a-zA-Z]+)|(protect-lien\\.com/[0-9a-zA-Z]+)|dl-protecte\\\
+              .org/([0-9a-zA-Z]+)"
             regexps:
-            - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
-            - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
+            - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
+            - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
             name: dlprotecte
             domains:
             - dl-protecte.com
@@ -1111,10 +1103,10 @@ components:
             status: true
         hosts:
           key:
-            regexp: (uptobox\.com/[0-9a-zA-Z]+(/.*)?)|uptostream\.com/([0-9a-zA-Z]{12})
+            regexp: "(uptobox\\.com/[0-9a-zA-Z]+(/.*)?)|uptostream\\.com/([0-9a-zA-Z]{12})"
             regexps:
-            - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
-            - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
+            - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
+            - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
             name: uptobox
             domains:
             - uptobox.com
@@ -1123,10 +1115,11 @@ components:
             status: true
         streams:
           key:
-            regexp: https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)", "https?:\/\/(?:www\\.)?youtube\\.com\/feed\/history|:ythistory
+            regexp: "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)\"\
+              , \"https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/feed\\/history|:ythistory"
             regexps:
-            - https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)
-            - https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)
+            - "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)"
+            - "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)"
             name: youtube
             domains:
             - youtube.be
@@ -1136,18 +1129,18 @@ components:
       properties:
         hosts:
           additionalProperties:
-            $ref: '#/components/schemas/inline_response_200_data_hosts'
+            $ref: '#/components/schemas/_hosts_get_200_response_data_hosts_value'
           type: object
         streams:
           additionalProperties:
-            $ref: '#/components/schemas/inline_response_200_data_streams'
+            $ref: '#/components/schemas/_hosts_get_200_response_data_streams_value'
           type: object
         redirectors:
           additionalProperties:
-            $ref: '#/components/schemas/inline_response_200_data_redirectors'
+            $ref: '#/components/schemas/_hosts_get_200_response_data_redirectors_value'
           type: object
       type: object
-    inline_response_200_error:
+    _hosts_get_200_response_error:
       example:
         code: AUTH_MISSING_APIKEY
         message: The auth apikey was not sent
@@ -1159,15 +1152,16 @@ components:
           example: The auth apikey was not sent
           type: string
       type: object
-    inline_response_200:
+    _hosts_get_200_response:
       example:
         data:
           redirectors:
             key:
-              regexp: (dl-protecte\.com/[0-9a-zA-Z]+)|(protect-lien\.com/[0-9a-zA-Z]+)|dl-protecte\.org/([0-9a-zA-Z]+)
+              regexp: "(dl-protecte\\.com/[0-9a-zA-Z]+)|(protect-lien\\.com/[0-9a-zA-Z]+)|dl-protecte\\\
+                .org/([0-9a-zA-Z]+)"
               regexps:
-              - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
-              - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
+              - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
+              - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
               name: dlprotecte
               domains:
               - dl-protecte.com
@@ -1176,10 +1170,10 @@ components:
               status: true
           hosts:
             key:
-              regexp: (uptobox\.com/[0-9a-zA-Z]+(/.*)?)|uptostream\.com/([0-9a-zA-Z]{12})
+              regexp: "(uptobox\\.com/[0-9a-zA-Z]+(/.*)?)|uptostream\\.com/([0-9a-zA-Z]{12})"
               regexps:
-              - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
-              - uptostream\\.com/iframe/([0-9a-zA-Z]{12})
+              - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
+              - "uptostream\\\\.com/iframe/([0-9a-zA-Z]{12})"
               name: uptobox
               domains:
               - uptobox.com
@@ -1188,11 +1182,11 @@ components:
               status: true
           streams:
             key:
-              regexp: https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)",
-                "https?:\/\/(?:www\\.)?youtube\\.com\/feed\/history|:ythistory
+              regexp: "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)\"\
+                , \"https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/feed\\/history|:ythistory"
               regexps:
-              - https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)
-              - https?:\/\/(?:www\\.)?youtube\\.com\/show\/(?P<id>[^?#]*)
+              - "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)"
+              - "https?:\\/\\/(?:www\\\\.)?youtube\\\\.com\\/show\\/(?P<id>[^?#]*)"
               name: youtube
               domains:
               - youtube.be
@@ -1208,11 +1202,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_data'
+          $ref: '#/components/schemas/_hosts_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_error'
+          $ref: '#/components/schemas/_hosts_get_200_response_error'
       type: object
-    inline_response_200_1_data:
+    _hosts_domains_get_200_response_data:
       example:
         redirectors:
         - dl-protecte.com
@@ -1240,7 +1234,7 @@ components:
             type: string
           type: array
       type: object
-    inline_response_200_1:
+    _hosts_domains_get_200_response:
       example:
         data:
           redirectors:
@@ -1261,11 +1255,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_1_data'
+          $ref: '#/components/schemas/_hosts_domains_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_error'
+          $ref: '#/components/schemas/_hosts_get_200_response_error'
       type: object
-    inline_response_200_2_data:
+    _hosts_priority_get_200_response_data:
       example:
         hosts:
           key: 4
@@ -1277,7 +1271,7 @@ components:
             type: integer
           type: object
       type: object
-    inline_response_200_2:
+    _hosts_priority_get_200_response:
       example:
         data:
           hosts:
@@ -1291,11 +1285,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_2_data'
+          $ref: '#/components/schemas/_hosts_priority_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_error'
+          $ref: '#/components/schemas/_hosts_get_200_response_error'
       type: object
-    inline_response_200_3_data_user:
+    _user_get_200_response_data_user:
       example:
         isSubscribed: true
         premiumUntil: 1545757200
@@ -1350,7 +1344,7 @@ components:
             type: string
           type: array
       type: object
-    inline_response_200_3_data:
+    _user_get_200_response_data:
       example:
         user:
           isSubscribed: true
@@ -1369,9 +1363,9 @@ components:
           username: MyUsername
       properties:
         user:
-          $ref: '#/components/schemas/inline_response_200_3_data_user'
+          $ref: '#/components/schemas/_user_get_200_response_data_user'
       type: object
-    inline_response_200_3:
+    _user_get_200_response:
       example:
         data:
           user:
@@ -1398,11 +1392,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_3_data'
+          $ref: '#/components/schemas/_user_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_error'
+          $ref: '#/components/schemas/_hosts_get_200_response_error'
       type: object
-    inline_response_200_4_data:
+    _user_notification_clear_get_200_response_data:
       example:
         message: Notification was cleared
       properties:
@@ -1410,7 +1404,7 @@ components:
           example: Notification was cleared
           type: string
       type: object
-    inline_response_200_4:
+    _user_notification_clear_get_200_response:
       example:
         data:
           message: Notification was cleared
@@ -1423,11 +1417,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_4_data'
+          $ref: '#/components/schemas/_user_notification_clear_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_error'
+          $ref: '#/components/schemas/_hosts_get_200_response_error'
       type: object
-    inline_response_200_5_data_infos:
+    _link_infos_get_200_response_data_infos_inner:
       example:
         filename: ubuntu-18.04.1-server-amd64.iso
         size: 699400192
@@ -1457,7 +1451,7 @@ components:
           example: uptobox.com
           type: string
       type: object
-    inline_response_200_5_data:
+    _link_infos_get_200_response_data:
       example:
         infos:
         - filename: ubuntu-18.04.1-server-amd64.iso
@@ -1474,10 +1468,10 @@ components:
         infos:
           description: Array of info objects
           items:
-            $ref: '#/components/schemas/inline_response_200_5_data_infos'
+            $ref: '#/components/schemas/_link_infos_get_200_response_data_infos_inner'
           type: array
       type: object
-    inline_response_200_5_error:
+    _link_infos_get_200_response_error:
       example:
         code: LINK_IS_MISSING
         message: No link was sent
@@ -1489,7 +1483,7 @@ components:
           example: No link was sent
           type: string
       type: object
-    inline_response_200_5:
+    _link_infos_get_200_response:
       example:
         data:
           infos:
@@ -1512,11 +1506,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_5_data'
+          $ref: '#/components/schemas/_link_infos_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_5_error'
+          $ref: '#/components/schemas/_link_infos_get_200_response_error'
       type: object
-    inline_response_200_6_data:
+    _link_redirector_get_200_response_data:
       example:
         links:
         - http://uptobox.com/l1ub83vil5c3
@@ -1529,7 +1523,7 @@ components:
             type: string
           type: array
       type: object
-    inline_response_200_6_error:
+    _link_redirector_get_200_response_error:
       example:
         code: REDIRECTOR_NOT_SUPPORTED
         message: Redirector not supported Redirector not supported
@@ -1541,7 +1535,7 @@ components:
           example: Redirector not supported Redirector not supported
           type: string
       type: object
-    inline_response_200_6:
+    _link_redirector_get_200_response:
       example:
         data:
           links:
@@ -1556,11 +1550,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_6_data'
+          $ref: '#/components/schemas/_link_redirector_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_6_error'
+          $ref: '#/components/schemas/_link_redirector_get_200_response_error'
       type: object
-    inline_response_200_7_data_streams:
+    _link_unlock_get_200_response_data_streams_inner:
       example:
         ext: m3u8
         abr: 128
@@ -1602,9 +1596,9 @@ components:
           format: int64
           type: integer
       type: object
-    inline_response_200_7_data:
+    _link_unlock_get_200_response_data:
       example:
-        filename: '[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv'
+        filename: "[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv"
         streams:
         - ext: m3u8
           abr: 128
@@ -1632,7 +1626,7 @@ components:
         id: 2bifjkf54f6
       properties:
         filename:
-          example: '[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv'
+          example: "[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv"
           type: string
         filesize:
           example: 1951233010
@@ -1654,10 +1648,10 @@ components:
           type: boolean
         streams:
           items:
-            $ref: '#/components/schemas/inline_response_200_7_data_streams'
+            $ref: '#/components/schemas/_link_unlock_get_200_response_data_streams_inner'
           type: array
       type: object
-    inline_response_200_7_error:
+    _link_unlock_get_200_response_error:
       example:
         code: LINK_HOST_NOT_SUPPORTED
         message: This link is not supported.
@@ -1669,10 +1663,10 @@ components:
           example: This link is not supported.
           type: string
       type: object
-    inline_response_200_7:
+    _link_unlock_get_200_response:
       example:
         data:
-          filename: '[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv'
+          filename: "[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv"
           streams:
           - ext: m3u8
             abr: 128
@@ -1707,11 +1701,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_7_data'
+          $ref: '#/components/schemas/_link_unlock_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_7_error'
+          $ref: '#/components/schemas/_link_unlock_get_200_response_error'
       type: object
-    inline_response_200_8_data_streams:
+    _link_streaming_get_200_response_data_streams_inner:
       example:
         ext: mp3
         abr: 128
@@ -1741,6 +1735,7 @@ components:
           type: string
         name:
           type: string
+          example: null
         link:
           type: string
         tb:
@@ -1751,9 +1746,9 @@ components:
           format: int64
           type: integer
       type: object
-    inline_response_200_8_data:
+    _link_streaming_get_200_response_data:
       example:
-        filename: '[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv'
+        filename: "[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv"
         streams:
         - ext: mp3
           abr: 128
@@ -1781,7 +1776,7 @@ components:
         id: 2bifjkf54f6
       properties:
         filename:
-          example: '[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv'
+          example: "[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv"
           type: string
         filesize:
           example: 1951233010
@@ -1803,13 +1798,13 @@ components:
           type: boolean
         streams:
           items:
-            $ref: '#/components/schemas/inline_response_200_8_data_streams'
+            $ref: '#/components/schemas/_link_streaming_get_200_response_data_streams_inner'
           type: array
       type: object
-    inline_response_200_8:
+    _link_streaming_get_200_response:
       example:
         data:
-          filename: '[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv'
+          filename: "[zza].Micmacs.à.tire-larigot.2009.1080p.x265.AC3.mkv"
           streams:
           - ext: mp3
             abr: 128
@@ -1844,11 +1839,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_8_data'
+          $ref: '#/components/schemas/_link_streaming_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_7_error'
+          $ref: '#/components/schemas/_link_unlock_get_200_response_error'
       type: object
-    inline_response_200_9_data:
+    _link_delayed_get_200_response_data:
       example:
         time_left: 0
         link: http://ombfyx.alld.io/dl/abcdefgh12/ubuntu-16.04.1-server-amd64.iso
@@ -1866,7 +1861,7 @@ components:
           example: http://ombfyx.alld.io/dl/abcdefgh12/ubuntu-16.04.1-server-amd64.iso
           type: string
       type: object
-    inline_response_200_9_error:
+    _link_delayed_get_200_response_error:
       example:
         code: DELAYED_INVALID_ID
         message: This delayed link id is invalid.
@@ -1878,7 +1873,7 @@ components:
           example: This delayed link id is invalid.
           type: string
       type: object
-    inline_response_200_9:
+    _link_delayed_get_200_response:
       example:
         data:
           time_left: 0
@@ -1893,11 +1888,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_9_data'
+          $ref: '#/components/schemas/_link_delayed_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_9_error'
+          $ref: '#/components/schemas/_link_delayed_get_200_response_error'
       type: object
-    inline_response_200_10_data_error:
+    _magnet_upload_get_200_response_data_magnets_inner_error:
       example:
         code: MAGNET_INVALID_URI
         message: Magnet is not valid
@@ -1909,7 +1904,7 @@ components:
           example: Magnet is not valid
           type: string
       type: object
-    inline_response_200_10_data_magnets:
+    _magnet_upload_get_200_response_data_magnets_inner:
       example:
         size: 875773970
         ready: true
@@ -1941,9 +1936,9 @@ components:
           format: int64
           type: integer
         error:
-          $ref: '#/components/schemas/inline_response_200_10_data_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_data_magnets_inner_error'
       type: object
-    inline_response_200_10_data:
+    _magnet_upload_get_200_response_data:
       example:
         magnets:
         - size: 875773970
@@ -1967,10 +1962,10 @@ components:
       properties:
         magnets:
           items:
-            $ref: '#/components/schemas/inline_response_200_10_data_magnets'
+            $ref: '#/components/schemas/_magnet_upload_get_200_response_data_magnets_inner'
           type: array
       type: object
-    inline_response_200_10_error:
+    _magnet_upload_get_200_response_error:
       example:
         code: AUTH_BAD_APIKEY
         message: The auth apikey is invalid.
@@ -1982,7 +1977,7 @@ components:
           example: The auth apikey is invalid.
           type: string
       type: object
-    inline_response_200_10:
+    _magnet_upload_get_200_response:
       example:
         data:
           magnets:
@@ -2013,17 +2008,17 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_10_data'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_10_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_error'
       type: object
-    inline_object:
+    _magnet_upload_file_post_request:
       properties:
-        '[]file':
+        files[]:
           format: binary
           type: string
       type: object
-    inline_response_200_11_data_error:
+    _magnet_upload_file_post_200_response_data_files_inner_error:
       example:
         code: MAGNET_INVALID_FILE
         message: File is not a valid torrent.
@@ -2035,7 +2030,7 @@ components:
           example: File is not a valid torrent.
           type: string
       type: object
-    inline_response_200_11_data_files:
+    _magnet_upload_file_post_200_response_data_files_inner:
       example:
         file: magnet:?xt=urn:btih:842783e3005495d5d1637f5364b59343c7844707&dn=ubuntu-18.04.2-live-server-amd64.iso
         size: 875773970
@@ -2067,9 +2062,9 @@ components:
           format: int64
           type: integer
         error:
-          $ref: '#/components/schemas/inline_response_200_11_data_error'
+          $ref: '#/components/schemas/_magnet_upload_file_post_200_response_data_files_inner_error'
       type: object
-    inline_response_200_11_data:
+    _magnet_upload_file_post_200_response_data:
       example:
         files:
         - file: magnet:?xt=urn:btih:842783e3005495d5d1637f5364b59343c7844707&dn=ubuntu-18.04.2-live-server-amd64.iso
@@ -2093,10 +2088,10 @@ components:
       properties:
         files:
           items:
-            $ref: '#/components/schemas/inline_response_200_11_data_files'
+            $ref: '#/components/schemas/_magnet_upload_file_post_200_response_data_files_inner'
           type: array
       type: object
-    inline_response_200_11:
+    _magnet_upload_file_post_200_response:
       example:
         data:
           files:
@@ -2127,11 +2122,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_11_data'
+          $ref: '#/components/schemas/_magnet_upload_file_post_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_10_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_error'
       type: object
-    inline_response_200_12_data_links:
+    _magnet_status_get_200_response_data_magnets_inner_links_inner:
       example:
         filename: ubuntu-20.04.2-live-server-amd64.iso
         size: 256458252
@@ -2148,7 +2143,7 @@ components:
           format: int64
           type: integer
       type: object
-    inline_response_200_12_data_magnets:
+    _magnet_status_get_200_response_data_magnets_inner:
       example:
         downloadSpeed: 0
         uploadSpeed: 0
@@ -2218,10 +2213,10 @@ components:
           type: integer
         links:
           items:
-            $ref: '#/components/schemas/inline_response_200_12_data_links'
+            $ref: '#/components/schemas/_magnet_status_get_200_response_data_magnets_inner_links_inner'
           type: array
       type: object
-    inline_response_200_12_data:
+    _magnet_status_get_200_response_data:
       example:
         magnets:
         - downloadSpeed: 0
@@ -2265,10 +2260,10 @@ components:
       properties:
         magnets:
           items:
-            $ref: '#/components/schemas/inline_response_200_12_data_magnets'
+            $ref: '#/components/schemas/_magnet_status_get_200_response_data_magnets_inner'
           type: array
       type: object
-    inline_response_200_12:
+    _magnet_status_get_200_response:
       example:
         data:
           magnets:
@@ -2319,11 +2314,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_12_data'
+          $ref: '#/components/schemas/_magnet_status_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_10_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_error'
       type: object
-    inline_response_200_13_data:
+    _magnet_delete_get_200_response_data:
       example:
         message: Magnet was successfully deleted
       properties:
@@ -2331,7 +2326,7 @@ components:
           example: Magnet was successfully deleted
           type: string
       type: object
-    inline_response_200_13_error:
+    _magnet_delete_get_200_response_error:
       example:
         code: MAGNET_INVALID_ID
         message: Magnet ID is invalid.
@@ -2343,7 +2338,7 @@ components:
           example: Magnet ID is invalid.
           type: string
       type: object
-    inline_response_200_13:
+    _magnet_delete_get_200_response:
       example:
         data:
           message: Magnet was successfully deleted
@@ -2356,11 +2351,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_13_data'
+          $ref: '#/components/schemas/_magnet_delete_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_13_error'
+          $ref: '#/components/schemas/_magnet_delete_get_200_response_error'
       type: object
-    inline_response_200_14_data_error:
+    _magnet_restart_get_200_response_data_magnets_inner_error:
       example:
         code: MAGNET_PROCESSING
         message: Magnet is processing or complete
@@ -2372,7 +2367,7 @@ components:
           example: Magnet is processing or complete
           type: string
       type: object
-    inline_response_200_14_data_magnets:
+    _magnet_restart_get_200_response_data_magnets_inner:
       example:
         message: Magnet was successfully restarted
         error:
@@ -2387,9 +2382,9 @@ components:
           example: Magnet was successfully restarted
           type: string
         error:
-          $ref: '#/components/schemas/inline_response_200_14_data_error'
+          $ref: '#/components/schemas/_magnet_restart_get_200_response_data_magnets_inner_error'
       type: object
-    inline_response_200_14_data:
+    _magnet_restart_get_200_response_data:
       example:
         magnets:
         - message: Magnet was successfully restarted
@@ -2405,10 +2400,10 @@ components:
       properties:
         magnets:
           items:
-            $ref: '#/components/schemas/inline_response_200_14_data_magnets'
+            $ref: '#/components/schemas/_magnet_restart_get_200_response_data_magnets_inner'
           type: array
       type: object
-    inline_response_200_14:
+    _magnet_restart_get_200_response:
       example:
         data:
           magnets:
@@ -2431,11 +2426,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_14_data'
+          $ref: '#/components/schemas/_magnet_restart_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_13_error'
+          $ref: '#/components/schemas/_magnet_delete_get_200_response_error'
       type: object
-    inline_response_200_15_data_magnets:
+    _magnet_instant_get_200_response_data_magnets_inner:
       example:
         error:
           code: MAGNET_INVALID_URI
@@ -2453,9 +2448,9 @@ components:
         instant:
           type: boolean
         error:
-          $ref: '#/components/schemas/inline_response_200_10_data_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_data_magnets_inner_error'
       type: object
-    inline_response_200_15_data:
+    _magnet_instant_get_200_response_data:
       example:
         magnets:
         - error:
@@ -2473,10 +2468,10 @@ components:
       properties:
         magnets:
           items:
-            $ref: '#/components/schemas/inline_response_200_15_data_magnets'
+            $ref: '#/components/schemas/_magnet_instant_get_200_response_data_magnets_inner'
           type: array
       type: object
-    inline_response_200_15:
+    _magnet_instant_get_200_response:
       example:
         data:
           magnets:
@@ -2501,11 +2496,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_15_data'
+          $ref: '#/components/schemas/_magnet_instant_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_10_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_error'
       type: object
-    inline_response_200_16_data_links:
+    _user_links_get_200_response_data_links_inner:
       example:
         date: 1569420668
         filename: ubuntu-16.04.6-desktop-amd64.iso
@@ -2531,7 +2526,7 @@ components:
           example: uptobox
           type: string
       type: object
-    inline_response_200_16_data:
+    _user_links_get_200_response_data:
       example:
         links:
         - date: 1569420668
@@ -2547,10 +2542,10 @@ components:
       properties:
         links:
           items:
-            $ref: '#/components/schemas/inline_response_200_16_data_links'
+            $ref: '#/components/schemas/_user_links_get_200_response_data_links_inner'
           type: array
       type: object
-    inline_response_200_16:
+    _user_links_get_200_response:
       example:
         data:
           links:
@@ -2573,11 +2568,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_16_data'
+          $ref: '#/components/schemas/_user_links_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_10_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_error'
       type: object
-    inline_response_200_17_data:
+    _user_links_save_get_200_response_data:
       example:
         message: Link was successfully saved
       properties:
@@ -2585,7 +2580,7 @@ components:
           example: Link was successfully saved
           type: string
       type: object
-    inline_response_200_17:
+    _user_links_save_get_200_response:
       example:
         data:
           message: Link was successfully saved
@@ -2598,11 +2593,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_17_data'
+          $ref: '#/components/schemas/_user_links_save_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_10_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_error'
       type: object
-    inline_response_200_18_data:
+    _user_links_delete_get_200_response_data:
       example:
         message: Link was successfully deleted
       properties:
@@ -2610,7 +2605,7 @@ components:
           example: Link was successfully deleted
           type: string
       type: object
-    inline_response_200_18:
+    _user_links_delete_get_200_response:
       example:
         data:
           message: Link was successfully deleted
@@ -2623,11 +2618,11 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_18_data'
+          $ref: '#/components/schemas/_user_links_delete_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_10_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_error'
       type: object
-    inline_response_200_19_data:
+    _user_history_delete_get_200_response_data:
       example:
         message: Links were successfully deleted
       properties:
@@ -2635,7 +2630,7 @@ components:
           example: Links were successfully deleted
           type: string
       type: object
-    inline_response_200_19:
+    _user_history_delete_get_200_response:
       example:
         data:
           message: Links were successfully deleted
@@ -2648,9 +2643,9 @@ components:
           example: success
           type: string
         data:
-          $ref: '#/components/schemas/inline_response_200_19_data'
+          $ref: '#/components/schemas/_user_history_delete_get_200_response_data'
         error:
-          $ref: '#/components/schemas/inline_response_200_10_error'
+          $ref: '#/components/schemas/_magnet_upload_get_200_response_error'
       type: object
   securitySchemes:
     bearerAuth:
